@@ -164,5 +164,8 @@
   "private": true,
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "publishConfig": {
+    "tag": "private-skip"
+  }
 }

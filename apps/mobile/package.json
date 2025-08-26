@@ -246,5 +246,8 @@
         "expo-constants"
       ]
     }
+  },
+  "publishConfig": {
+    "tag": "private-skip"
   }
 }

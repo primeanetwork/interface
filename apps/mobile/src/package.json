@@ -1,3 +1,8 @@
 {
-  "name": "src"
+  "name": "src",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "primea-alpha"
+  }
 }
