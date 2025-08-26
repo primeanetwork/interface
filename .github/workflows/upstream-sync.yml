@@ -1,0 +1,86 @@
+name: Upstream Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_owner:
+        description: "Upstream owner/org"
+        required: false
+        default: "Uniswap"
+      upstream_branch:
+        description: "Upstream branch"
+        required: false
+        default: "main"
+      dry_run:
+        description: "If 'true', do not push or modify PRs"
+        required: false
+        default: "true"
+  schedule:
+    - cron: "0 6 * * MON"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  SYNC_BRANCH: sync/upstream
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: Vars
+        id: vars
+        shell: bash
+        run: |
+          echo "default_branch=${GITHUB_REF_NAME:-${{ github.event.repository.default_branch }}}" >> "$GITHUB_OUTPUT"
+          echo "repo_name=${GITHUB_REPOSITORY#*/}" >> "$GITHUB_OUTPUT"
+          echo "upstream_owner=${{ inputs.upstream_owner }}" >> "$GITHUB_OUTPUT"
+          echo "upstream_branch=${{ inputs.upstream_branch }}" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+
+      - name: Git config
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          set -e
+          UPSTREAM_URL="https://github.com/${{ steps.vars.outputs.upstream_owner }}/${{ steps.vars.outputs.repo_name }}.git"
+          git remote add upstream "$UPSTREAM_URL" 2>/dev/null || true
+          git fetch --no-tags upstream "${{ steps.vars.outputs.upstream_branch }}" --depth=100
+
+      - name: Create/Update sync branch from upstream
+        run: |
+          set -e
+          git checkout -B "$SYNC_BRANCH" "upstream/${{ steps.vars.outputs.upstream_branch }}"
+          git log --oneline -n 1
+
+      - name: Push sync branch (unless dry-run)
+        if: ${{ steps.vars.outputs.dry_run != 'true' }}
+        run: |
+          git push -u origin "$SYNC_BRANCH" --force-with-lease
+
+      - name: Ensure PR from sync → default (unless dry-run)
+        if: ${{ steps.vars.outputs.dry_run != 'true' }}
+        env: { GH_TOKEN: ${{ github.token }} }
+        run: |
+          set -e
+          DEF="${{ steps.vars.outputs.default_branch }}"
+          TITLE="chore(sync): upstream → ${DEF}"
+          BODY="Automated upstream sync (source: upstream/${{ steps.vars.outputs.upstream_branch }}, head: $SYNC_BRANCH, target: ${DEF})."
+          PR="$(gh pr list --head "$SYNC_BRANCH" --base "$DEF" --json number -q '.[0].number' || true)"
+          if [[ -n "$PR" ]]; then
+            gh pr edit "$PR" -t "$TITLE" -b "$BODY" || true
+            echo "Updated PR #$PR"
+          else
+            gh pr create --head "$SYNC_BRANCH" --base "$DEF" -t "$TITLE" -b "$BODY" || true
+          fi
+
+      - name: Summary
+        run: echo "Done: dry_run=${{ steps.vars.outputs.dry_run }}"
