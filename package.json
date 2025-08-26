@@ -203,5 +203,8 @@
   "bugs": {
     "url": "https://github.com/primeanetwork/interface/issues"
   },
-  "homepage": "https://primea.network"
+  "homepage": "https://primea.network",
+  "publishConfig": {
+    "tag": "private-skip"
+  }
 }

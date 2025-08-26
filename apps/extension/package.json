@@ -109,5 +109,8 @@
     "test": "jest",
     "snapshots": "jest -u",
     "typecheck": "tsc -b"
+  },
+  "publishConfig": {
+    "tag": "private-skip"
   }
 }

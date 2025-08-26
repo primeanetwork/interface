@@ -75,5 +75,8 @@
   "sideEffects": [
     "*.css"
   ],
-  "types": "./types/index"
+  "types": "./types/index",
+  "publishConfig": {
+    "tag": "private-skip"
+  }
 }

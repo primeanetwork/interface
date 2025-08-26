@@ -290,5 +290,10 @@
     "*.css",
     "**/sideEffects.ts",
     "**/tracing/index.ts"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "primea-alpha"
+  }
 }
