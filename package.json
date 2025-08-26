@@ -194,5 +194,14 @@
     "apps/*",
     "packages/*",
     "config/*"
-  ]
+  ],
+  "description": "PrimeaSwap interface — independent fork",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/primeanetwork/interface.git"
+  },
+  "bugs": {
+    "url": "https://github.com/primeanetwork/interface/issues"
+  },
+  "homepage": "https://primea.network"
 }

@@ -1,3 +1,5 @@
+> **Independent fork** — not affiliated with Uniswap. See NOTICE.md.
+
 # Uniswap Labs: Front End Interfaces
 
 This is the **public** repository for Uniswap Labs’ front-end interfaces, including the Web App, Wallet Mobile App, and Wallet Extension. Uniswap is a protocol for decentralized exchange of Ethereum-based assets.
