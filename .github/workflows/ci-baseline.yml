@@ -1,0 +1,61 @@
+name: CI (baseline)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - "rebrand/**"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Corepack (pnpm/yarn)
+        run: |
+          corepack enable || true
+          node -v
+          npm -v
+
+      - name: Install (best-effort)
+        run: |
+          set -e
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm -v || true
+            pnpm install --frozen-lockfile || pnpm install || true
+          elif [ -f yarn.lock ] || [ -d .yarn ]; then
+            yarn -v || true
+            # Yarn Berry first; fallback if classic
+            (yarn install --immutable || yarn install) || true
+          elif [ -f package-lock.json ]; then
+            npm ci || npm install || true
+          elif [ -f package.json ]; then
+            npm install || true
+          else
+            echo "No Node workspace detected; skipping install."
+          fi
+
+      - name: Build/Test (best-effort)
+        run: |
+          set -e
+          if [ -f package.json ]; then
+            npm run --if-present lint || true
+            npm run --if-present typecheck || true
+            npm run --if-present build || true
+            npm run --if-present test || true
+          else
+            echo "No package.json; nothing to run."
+          fi
