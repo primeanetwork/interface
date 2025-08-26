@@ -1,3 +1,15 @@
-# Windows files should use crlf line endings
-# https://help.github.com/articles/dealing-with-line-endings/
-*.bat text eol=crlf
+* text=auto eol=lf
+*.sol linguist-language=Solidity
+
+# lockfiles as text with LF
+package-lock.json text eol=lf
+yarn.lock text eol=lf
+pnpm-lock.yaml text eol=lf
+
+# reduce PR noise from generated artifacts
+dist/** linguist-generated
+build/** linguist-generated
+generated/** linguist-generated
+*/dist/** linguist-generated
+*/build/** linguist-generated
+*/generated/** linguist-generated
