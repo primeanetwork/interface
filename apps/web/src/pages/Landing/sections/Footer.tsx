@@ -27,17 +27,17 @@ export function Socials({ iconSize }: { iconSize?: string }) {
   return (
     <Flex row gap="$spacing24" maxHeight={iconSize} alignItems="flex-start">
       <SocialIcon iconColor="#00C32B">
-        <Anchor href="https://github.com/Uniswap" target="_blank">
+        <Anchor href="https://github.com/PrimeaNetwork" target="_blank">
           <Github size={iconSize} fill="inherit" />
         </Anchor>
       </SocialIcon>
       <SocialIcon iconColor="#20BAFF">
-        <Anchor href="https://x.com/Uniswap" target="_blank">
+        <Anchor href="https://x.com/PrimeaNetwork" target="_blank">
           <Twitter size={iconSize} fill="inherit" />
         </Anchor>
       </SocialIcon>
       <SocialIcon iconColor="#5F51FF">
-        <Anchor href="https://discord.com/invite/uniswap" target="_blank">
+        <Anchor href="https://discord.com/invite/primeanetwork" target="_blank">
           <Discord size={iconSize} fill="inherit" />
         </Anchor>
       </SocialIcon>
@@ -112,7 +112,7 @@ export function Footer() {
         width="100%"
         justifyContent="space-between"
       >
-        <Text variant="body3">© {currentYear} - Uniswap Labs</Text>
+        <Text variant="body3">© {currentYear} - Primea Labs</Text>
         <Flex row alignItems="center" gap="$spacing16">
           <PolicyLink onPress={togglePrivacyPolicy}>{t('common.privacyPolicy')}</PolicyLink>
           <Anchor textDecorationLine="none" href="https://uniswap.org/trademark" target="_blank">
