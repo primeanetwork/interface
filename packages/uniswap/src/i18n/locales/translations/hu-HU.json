@@ -855,7 +855,7 @@
   "forceUpgrade.title.recommendedStatus": "Új verzió érhető el",
   "globalPreferences.title": "Globális preferenciák",
   "hero.scroll": "További információért görgessen",
-  "hero.subtitle": "Vásárolj és adj el kriptovalutákat több mint 14 hálózaton, beleértve az Ethereumot, az Unichaint és a Base-t.",
+  "hero.subtitle": "Vásárolj, adj el és kereskedj eszközfedezetű tokenekkel a Primea-hálózaton.",
   "hero.swap.title": "Csere bármikor, <br/> bárhol.",
   "hidden.nfts.info.banner.text": "További információ a rejtett NFT-kről",
   "hidden.nfts.info.text.button": "Rejtett NFT-k ({{numHidden}})",
