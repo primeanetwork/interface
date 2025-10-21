@@ -14,6 +14,7 @@ import { WORLD_CHAIN_INFO } from 'uniswap/src/features/chains/evm/info/worldchai
 import { ZKSYNC_CHAIN_INFO } from 'uniswap/src/features/chains/evm/info/zksync'
 import { ZORA_CHAIN_INFO } from 'uniswap/src/features/chains/evm/info/zora'
 import { SOLANA_CHAIN_INFO } from 'uniswap/src/features/chains/svm/info/solana'
+import { PRIMEA_CHAIN_INFO } from 'uniswap/src/features/chains/evm/info/primea'
 import { UniverseChainId, UniverseChainInfo } from 'uniswap/src/features/chains/types'
 import { Platform } from 'uniswap/src/features/platforms/types/Platform'
 import { getNonEmptyArrayOrThrow } from 'utilities/src/primitives/array'
@@ -23,6 +24,7 @@ export function getChainInfo(chainId: UniverseChainId): UniverseChainInfo {
 }
 
 export const ORDERED_CHAINS = [
+  PRIMEA_CHAIN_INFO,
   MAINNET_CHAIN_INFO,
   UNICHAIN_CHAIN_INFO,
   SOLANA_CHAIN_INFO,
@@ -69,6 +71,7 @@ type AllChainsMap = {
 
 export const UNIVERSE_CHAIN_INFO = {
   // MAINNETS
+  [UniverseChainId.Primea]: PRIMEA_CHAIN_INFO,
   [UniverseChainId.Mainnet]: MAINNET_CHAIN_INFO,
   [UniverseChainId.Unichain]: UNICHAIN_CHAIN_INFO,
   [UniverseChainId.Polygon]: POLYGON_CHAIN_INFO,
