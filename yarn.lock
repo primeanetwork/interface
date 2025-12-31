@@ -17773,14 +17773,14 @@ __metadata:
     multihashes: 4.0.2
     nock: 13.3.3
     nuqs: 2.4.3
-    playwright: 1.49.1
+    playwright: 1.55.1
     png-ts: 0.0.3
     polished: 3.3.2
     polyfill-object.fromentries: 1.0.1
     postinstall-postinstall: 2.1.0
     process: 0.11.10
     prop-types: 15.8.1
-    qs: 6.11.0
+    qs: 6.14.1
     react: 18.3.1
     react-compiler-runtime: rc
     react-dom: 18.3.1
@@ -38869,6 +38869,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.55.1":
+  version: 1.55.1
+  resolution: "playwright-core@npm:1.55.1"
+  bin:
+    playwright-core: cli.js
+  checksum: a2b981223fd8f5c50a4e0b6cc36a3ce40b41919d418b564561f085bcd6c8ce9df2354e687fbc76e662fddb9f2b28d0bc1f0124c085958406fcab6c6cf3b8228f
+  languageName: node
+  linkType: hard
+
 "playwright-slack-report@npm:1.1.99":
   version: 1.1.99
   resolution: "playwright-slack-report@npm:1.1.99"
@@ -38897,6 +38906,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: c136d42d625e32614f90e5228a165dc8be48c5bfb52aca9210c6ff04161a409dbe42fe5ae4f05a2653f6a1b836876a04d3b0f24bcbbc053d1509c1d605b7c8d5
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.55.1":
+  version: 1.55.1
+  resolution: "playwright@npm:1.55.1"
+  dependencies:
+    fsevents: 2.3.2
+    playwright-core: 1.55.1
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 4935122ed687cd14861d64e6fdc79613d36d45f1363e911213a338da9993525d3872d7379300471f70209e1ad68ec91c0d65f0136e6c09c0775477943aaf7fb3
   languageName: node
   linkType: hard
 
@@ -47615,7 +47639,7 @@ __metadata:
     ms: 2.1.3
     openapi-typescript-codegen: 0.27.0
     poisson-disk-sampling: 2.3.1
-    qs: 6.11.0
+    qs: 6.14.1
     react: 18.3.1
     react-dom: 18.3.1
     react-i18next: 14.1.0
