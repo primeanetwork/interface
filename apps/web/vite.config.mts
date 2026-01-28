@@ -95,6 +95,7 @@ export default defineConfig(({ mode }) => {
       ],
       alias: {
         ...overrides,
+        '@': path.resolve(__dirname, 'src'),
       },
     },
 
