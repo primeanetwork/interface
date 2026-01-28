@@ -5,7 +5,8 @@ import {
   calculateApr,
   sortPools,
 } from 'appGraphql/data/pools/useTopPools'
-import { useCallback, useMemo, useRef, useEffect, useState } from 'react'
+// import { useCallback, useMemo, useRef, useEffect, useState } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { DEFAULT_TICK_SPACING, V2_DEFAULT_FEE_TIER } from 'uniswap/src/constants/pools'
 import {
   useTopV2PairsQuery,
@@ -17,7 +18,7 @@ import { UniverseChainId } from 'uniswap/src/features/chains/types'
 import { toGraphQLChain } from 'uniswap/src/features/chains/utils'
 
 // ⬇️ adjust this path if your alias doesn't resolve
-//import { registryClient, registryAddress, registryAbi } from '@/utils/registry'
+// import { registryClient, registryAddress, registryAbi } from '@/utils/registry'
 
 const DEFAULT_QUERY_SIZE = 20
 
@@ -33,6 +34,7 @@ export function usePoolsFromTokenAddress({
   isNative?: boolean
 }) {
   const chain = toGraphQLChain(chainId)
+
   const {
     loading: loadingV4,
     error: errorV4,
@@ -81,8 +83,13 @@ export function usePoolsFromTokenAddress({
 
   const loadMore = useCallback(
     ({ onComplete }: { onComplete?: () => void }) => {
-      if (loadingMoreV4.current || loadingMoreV3.current || loadingMoreV2.current) return
-      loadingMoreV4.current = loadingMoreV3.current = loadingMoreV2.current = true
+      if (loadingMoreV4.current || loadingMoreV3.current || loadingMoreV2.current) {
+        return
+      }
+
+      loadingMoreV4.current = true
+      loadingMoreV3.current = true
+      loadingMoreV2.current = true
       sizeRef.current += DEFAULT_QUERY_SIZE
 
       fetchMoreV4({
@@ -94,10 +101,15 @@ export function usePoolsFromTokenAddress({
             loadingMoreV4.current = false
             return prev
           }
-          if (!loadingMoreV3.current && !loadingMoreV2.current) onComplete?.()
+
+          if (!loadingMoreV3.current && !loadingMoreV2.current) {
+            onComplete?.()
+          }
+
           const mergedData = {
             topV4Pools: [...(prev.topV4Pools ?? []), ...(fetchMoreResult.topV4Pools ?? [])],
           }
+
           loadingMoreV4.current = false
           return mergedData
         },
@@ -112,10 +124,15 @@ export function usePoolsFromTokenAddress({
             loadingMoreV3.current = false
             return prev
           }
-          if (!loadingMoreV2.current && !loadingMoreV4.current) onComplete?.()
+
+          if (!loadingMoreV2.current && !loadingMoreV4.current) {
+            onComplete?.()
+          }
+
           const mergedData = {
             topV3Pools: [...(prev.topV3Pools ?? []), ...(fetchMoreResult.topV3Pools ?? [])],
           }
+
           loadingMoreV3.current = false
           return mergedData
         },
@@ -130,10 +147,15 @@ export function usePoolsFromTokenAddress({
             loadingMoreV2.current = false
             return prev
           }
-          if (!loadingMoreV3.current && !loadingMoreV4.current) onComplete?.()
+
+          if (!loadingMoreV3.current && !loadingMoreV4.current) {
+            onComplete?.()
+          }
+
           const mergedData = {
             topV2Pairs: [...(prev.topV2Pairs ?? []), ...(fetchMoreResult.topV2Pairs ?? [])],
           }
+
           loadingMoreV2.current = false
           return mergedData
         },
@@ -142,7 +164,7 @@ export function usePoolsFromTokenAddress({
     [dataV2?.topV2Pairs, dataV3?.topV3Pools, dataV4?.topV4Pools, fetchMoreV2, fetchMoreV3, fetchMoreV4],
   )
 
-  // Build raw pools as before
+  // Build raw pools (Primea Phase 1: no TokenRegistry filter)
   const rawPools: TablePool[] = useMemo(() => {
     const topV4Pools: TablePool[] =
       dataV4?.topV4Pools?.map((pool) => ({
@@ -207,55 +229,54 @@ export function usePoolsFromTokenAddress({
   }, [dataV2?.topV2Pairs, dataV3?.topV3Pools, dataV4?.topV4Pools, sortState])
 
   // TokenRegistry whitelist filter (cached)
-// Primea Phase 1: no TokenRegistry deployed → do NOT filter pools.
-// const [verifiedPools, setVerifiedPools] = useState<TablePool[]>([])
-// useEffect(() => {
-//   let cancelled = false
-//   const cache = new Map<string, boolean>()
-//
-//   const toAddr = (a?: string) => (a?.toLowerCase() as `0x${string}` | undefined)
-//
-//   async function isWhitelisted(addr?: string): Promise<boolean> {
-//     if (!addr) return false
-//     if (cache.has(addr)) return cache.get(addr) as boolean
-//     try {
-//       const ok = await registryClient.readContract({
-//         address: registryAddress,
-//         abi: registryAbi,
-//         functionName: 'isWhitelisted',
-//         args: [addr as `0x${string}`],
-//       })
-//       cache.set(addr, Boolean(ok))
-//       return Boolean(ok)
-//     } catch {
-//       cache.set(addr, false)
-//       return false
-//     }
-//   }
-//
-//   async function run() {
-//     if (!rawPools?.length) {
-//       if (!cancelled) setVerifiedPools([])
-//       return
-//     }
-//     const checks = await Promise.all(
-//       rawPools.map(async (p) => {
-//         const t0 = toAddr(p.token0?.id ?? (p as any).token0?.address)
-//         const t1 = toAddr(p.token1?.id ?? (p as any).token1?.address)
-//         const [ok0, ok1] = await Promise.all([isWhitelisted(t0), isWhitelisted(t1)])
-//         return ok0 && ok1 ? p : null
-//       }),
-//     )
-//     if (!cancelled) setVerifiedPools(checks.filter(Boolean) as TablePool[])
-//   }
-//
-//   run()
-//   return () => {
-//     cancelled = true
-//   }
-// }, [rawPools])
+  // Primea Phase 1: no TokenRegistry deployed → do NOT filter pools.
+  // const [verifiedPools, setVerifiedPools] = useState<TablePool[]>([])
+  // useEffect(() => {
+  //   let cancelled = false
+  //   const cache = new Map<string, boolean>()
+  //
+  //   const toAddr = (a?: string) => (a?.toLowerCase() as `0x${string}` | undefined)
+  //
+  //   async function isWhitelisted(addr?: string): Promise<boolean> {
+  //     if (!addr) return false
+  //     if (cache.has(addr)) return cache.get(addr) as boolean
+  //     try {
+  //       const ok = await registryClient.readContract({
+  //         address: registryAddress,
+  //         abi: registryAbi,
+  //         functionName: 'isWhitelisted',
+  //         args: [addr as `0x${string}`],
+  //       })
+  //       cache.set(addr, Boolean(ok))
+  //       return Boolean(ok)
+  //     } catch {
+  //       cache.set(addr, false)
+  //       return false
+  //     }
+  //   }
+  //
+  //   async function run() {
+  //     if (!rawPools?.length) {
+  //       if (!cancelled) setVerifiedPools([])
+  //       return
+  //     }
+  //     const checks = await Promise.all(
+  //       rawPools.map(async (p) => {
+  //         const t0 = toAddr(p.token0?.id ?? (p as any).token0?.address)
+  //         const t1 = toAddr(p.token1?.id ?? (p as any).token1?.address)
+  //         const [ok0, ok1] = await Promise.all([isWhitelisted(t0), isWhitelisted(t1)])
+  //         return ok0 && ok1 ? p : null
+  //       }),
+  //     )
+  //     if (!cancelled) setVerifiedPools(checks.filter(Boolean) as TablePool[])
+  //   }
+  //
+  //   run()
+  //   return () => {
+  //     cancelled = true
+  //   }
+  // }, [rawPools])
 
-// Phase 1 output: raw pools (no registry filter)
-return { loading, errorV2, errorV3, errorV4, pools: rawPools, loadMore }
-
+  // Phase 1 output: raw pools (no registry filter)
+  return { loading, errorV2, errorV3, errorV4, pools: rawPools, loadMore }
 }

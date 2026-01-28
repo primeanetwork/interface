@@ -231,15 +231,15 @@ export function getEnabledChains({
   }
 
   // Previous (broken) approach: returning an object inside Array.filter()
-//   const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
-//     if (PRIMEA_ONLY) {
-//       return {
-//         chains: [UniverseChainId.Primea],
-//         gqlChains: [],
-//         defaultChainId: UniverseChainId.Primea,
-//         isTestnetModeEnabled: false,
-//       }
-//     }
+  //   const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
+  //     if (PRIMEA_ONLY) {
+  //       return {
+  //         chains: [UniverseChainId.Primea],
+  //         gqlChains: [],
+  //         defaultChainId: UniverseChainId.Primea,
+  //         isTestnetModeEnabled: false,
+  //       }
+  //     }
 
   const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
     // Filter by platform
@@ -264,7 +264,6 @@ export function getEnabledChains({
 
     return true
   })
-
 
   // Extract chain IDs and GQL chains from filtered results
   const chains = enabledChainInfos.map((chainInfo) => chainInfo.id)
