@@ -10,6 +10,7 @@ import { Chain as WagmiChain } from 'wagmi/chains'
 import { type UNIVERSE_CHAIN_INFO } from 'uniswap/src/features/chains/chainInfo'
 
 export enum UniverseChainId {
+  Primea = 698369,
   Mainnet = UniswapSDKChainId.MAINNET,
   ArbitrumOne = UniswapSDKChainId.ARBITRUM_ONE,
   Avalanche = UniswapSDKChainId.AVALANCHE,
