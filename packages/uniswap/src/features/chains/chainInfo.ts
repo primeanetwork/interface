@@ -20,7 +20,11 @@ import { Platform } from 'uniswap/src/features/platforms/types/Platform'
 import { getNonEmptyArrayOrThrow } from 'utilities/src/primitives/array'
 
 export function getChainInfo(chainId: UniverseChainId): UniverseChainInfo {
-  return UNIVERSE_CHAIN_INFO[chainId]
+  // OLD (can return undefined if chainId is not mapped)
+  // return UNIVERSE_CHAIN_INFO[chainId]
+
+  // Primea Phase 1: hard-fallback to Primea to prevent boot crashes when code tries chainId=1 etc.
+  return (UNIVERSE_CHAIN_INFO[chainId] ?? PRIMEA_CHAIN_INFO) as UniverseChainInfo
 }
 
 export const ORDERED_CHAINS = [

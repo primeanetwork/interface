@@ -4,15 +4,26 @@ import { logger } from 'utilities/src/logger/logger'
 
 export function getDeviceLocales(): DeviceLocale[] {
   try {
-    const chrome = getChromeWithThrow()
-    const language = chrome.i18n.getUILanguage()
-    return [{ languageCode: language, languageTag: language }]
+    // OLD (extension-only)
+    // const chrome = getChromeWithThrow()
+    // const language = chrome.i18n.getUILanguage()
+    // return [{ languageCode: language, languageTag: language }]
+
+    // Web-safe fallback
+    const language =
+      (typeof navigator !== 'undefined' && navigator.language) ? navigator.language : DEFAULT_LANGUAGE_TAG
+
+    // languageCode should be just "en" from "en-US"
+    const languageCode = language.split('-')[0] || DEFAULT_LANGUAGE_CODE
+
+    return [{ languageCode, languageTag: language }]
   } catch (e) {
     logger.error(e, {
       level: 'warn',
-      tags: { file: 'utils.ts', function: 'getDeviceLocales' },
+      tags: { file: 'locales.web.ts', function: 'getDeviceLocales' },
     })
   }
+
   return [
     {
       languageCode: DEFAULT_LANGUAGE_CODE,
@@ -20,3 +31,4 @@ export function getDeviceLocales(): DeviceLocale[] {
     },
   ]
 }
+
