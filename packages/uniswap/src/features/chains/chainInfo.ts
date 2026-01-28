@@ -25,7 +25,7 @@ export function getChainInfo(chainId: UniverseChainId): UniverseChainInfo {
 
 export const ORDERED_CHAINS = [
   PRIMEA_CHAIN_INFO,
-  MAINNET_CHAIN_INFO,
+  /*MAINNET_CHAIN_INFO,
   UNICHAIN_CHAIN_INFO,
   SOLANA_CHAIN_INFO,
   POLYGON_CHAIN_INFO,
@@ -42,7 +42,7 @@ export const ORDERED_CHAINS = [
   ZKSYNC_CHAIN_INFO,
   SEPOLIA_CHAIN_INFO,
   UNICHAIN_SEPOLIA_CHAIN_INFO,
-  MONAD_CHAIN_INFO,
+  MONAD_CHAIN_INFO,*/
 ] as const satisfies UniverseChainInfo[]
 
 type ConstChainInfo<P extends Platform = Platform> = Extract<(typeof ORDERED_CHAINS)[number], { platform: P }>
@@ -65,14 +65,14 @@ export const ORDERED_EVM_CHAINS = getNonEmptyArrayOrThrow(getOrderedEVMChains())
 export const ALL_EVM_CHAIN_IDS = ORDERED_EVM_CHAINS.map((chain) => chain.id)
 
 // Typing ensures the `UNIVERSE_CHAIN_INFO` map contains a proper mapping for each item defined in `ORDERED_EVM_CHAINS` (all keys defined & keys match corresponding value's `id` field)
-type AllChainsMap = {
+type AllChainsMap = Partial<{
   [chainId in UniverseChainId]: Extract<ConstChainInfo, { id: chainId }>
-}
+}>
 
 export const UNIVERSE_CHAIN_INFO = {
   // MAINNETS
   [UniverseChainId.Primea]: PRIMEA_CHAIN_INFO,
-  [UniverseChainId.Mainnet]: MAINNET_CHAIN_INFO,
+  /*[UniverseChainId.Mainnet]: MAINNET_CHAIN_INFO,
   [UniverseChainId.Unichain]: UNICHAIN_CHAIN_INFO,
   [UniverseChainId.Polygon]: POLYGON_CHAIN_INFO,
   [UniverseChainId.ArbitrumOne]: ARBITRUM_CHAIN_INFO,
@@ -93,7 +93,7 @@ export const UNIVERSE_CHAIN_INFO = {
   [UniverseChainId.UnichainSepolia]: UNICHAIN_SEPOLIA_CHAIN_INFO,
 
   // SVM
-  [UniverseChainId.Solana]: SOLANA_CHAIN_INFO,
+  [UniverseChainId.Solana]: SOLANA_CHAIN_INFO,*/
 } as const satisfies AllChainsMap
 
 export const GQL_MAINNET_CHAINS = ORDERED_EVM_CHAINS.filter((chain) => !chain.testnet).map(

@@ -5,6 +5,7 @@ import { Chain } from 'uniswap/src/data/graphql/uniswap-data-api/__generated__/t
 import { ALL_CHAIN_IDS, ORDERED_CHAINS, getChainInfo } from 'uniswap/src/features/chains/chainInfo'
 import { EnabledChainsInfo, GqlChainId, NetworkLayer, UniverseChainId } from 'uniswap/src/features/chains/types'
 import { Platform } from 'uniswap/src/features/platforms/types/Platform'
+const PRIMEA_ONLY = true
 
 // Some code from the web app uses chainId types as numbers
 // This validates them as coerces into SupportedChainId
@@ -219,6 +220,15 @@ export function getEnabledChains({
   includeTestnets?: boolean
 }): EnabledChainsInfo {
   const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
+    if (PRIMEA_ONLY) {
+      return {
+        chains: [UniverseChainId.Primea],
+        gqlChains: [],
+        defaultChainId: UniverseChainId.Primea,
+        isTestnetModeEnabled: false,
+      }
+    }
+ 
     // Filter by platform
     if (platform !== undefined && platform !== chainInfo.platform) {
       return false
@@ -263,12 +273,13 @@ function getDefaultChainId({
   platform?: Platform
   isTestnetModeEnabled: boolean
 }): UniverseChainId {
-  if (platform === Platform.SVM) {
+  /*if (platform === Platform.SVM) {
     // TODO(Solana): is there a Solana testnet we can return here?
     return UniverseChainId.Solana
   }
 
-  return isTestnetModeEnabled ? UniverseChainId.Sepolia : UniverseChainId.Mainnet
+  return isTestnetModeEnabled ? UniverseChainId.Sepolia : UniverseChainId.Mainnet*/
+  return UniverseChainId.Primea
 }
 
 /** Returns all stablecoins for a given chainId. */
