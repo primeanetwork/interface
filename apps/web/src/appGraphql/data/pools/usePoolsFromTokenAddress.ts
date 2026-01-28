@@ -17,7 +17,7 @@ import { UniverseChainId } from 'uniswap/src/features/chains/types'
 import { toGraphQLChain } from 'uniswap/src/features/chains/utils'
 
 // ⬇️ adjust this path if your alias doesn't resolve
-import { registryClient, registryAddress, registryAbi } from '@/utils/registry'
+//import { registryClient, registryAddress, registryAbi } from '@/utils/registry'
 
 const DEFAULT_QUERY_SIZE = 20
 
@@ -207,52 +207,55 @@ export function usePoolsFromTokenAddress({
   }, [dataV2?.topV2Pairs, dataV3?.topV3Pools, dataV4?.topV4Pools, sortState])
 
   // TokenRegistry whitelist filter (cached)
-  const [verifiedPools, setVerifiedPools] = useState<TablePool[]>([])
-  useEffect(() => {
-    let cancelled = false
-    const cache = new Map<string, boolean>()
+// Primea Phase 1: no TokenRegistry deployed → do NOT filter pools.
+// const [verifiedPools, setVerifiedPools] = useState<TablePool[]>([])
+// useEffect(() => {
+//   let cancelled = false
+//   const cache = new Map<string, boolean>()
+//
+//   const toAddr = (a?: string) => (a?.toLowerCase() as `0x${string}` | undefined)
+//
+//   async function isWhitelisted(addr?: string): Promise<boolean> {
+//     if (!addr) return false
+//     if (cache.has(addr)) return cache.get(addr) as boolean
+//     try {
+//       const ok = await registryClient.readContract({
+//         address: registryAddress,
+//         abi: registryAbi,
+//         functionName: 'isWhitelisted',
+//         args: [addr as `0x${string}`],
+//       })
+//       cache.set(addr, Boolean(ok))
+//       return Boolean(ok)
+//     } catch {
+//       cache.set(addr, false)
+//       return false
+//     }
+//   }
+//
+//   async function run() {
+//     if (!rawPools?.length) {
+//       if (!cancelled) setVerifiedPools([])
+//       return
+//     }
+//     const checks = await Promise.all(
+//       rawPools.map(async (p) => {
+//         const t0 = toAddr(p.token0?.id ?? (p as any).token0?.address)
+//         const t1 = toAddr(p.token1?.id ?? (p as any).token1?.address)
+//         const [ok0, ok1] = await Promise.all([isWhitelisted(t0), isWhitelisted(t1)])
+//         return ok0 && ok1 ? p : null
+//       }),
+//     )
+//     if (!cancelled) setVerifiedPools(checks.filter(Boolean) as TablePool[])
+//   }
+//
+//   run()
+//   return () => {
+//     cancelled = true
+//   }
+// }, [rawPools])
 
-    const toAddr = (a?: string) => (a?.toLowerCase() as `0x${string}` | undefined)
+// Phase 1 output: raw pools (no registry filter)
+return { loading, errorV2, errorV3, errorV4, pools: rawPools, loadMore }
 
-    async function isWhitelisted(addr?: string): Promise<boolean> {
-      if (!addr) return false
-      if (cache.has(addr)) return cache.get(addr) as boolean
-      try {
-        const ok = await registryClient.readContract({
-          address: registryAddress,
-          abi: registryAbi,
-          functionName: 'isWhitelisted',
-          args: [addr as `0x${string}`],
-        })
-        cache.set(addr, Boolean(ok))
-        return Boolean(ok)
-      } catch {
-        cache.set(addr, false)
-        return false
-      }
-    }
-
-    async function run() {
-      if (!rawPools?.length) {
-        if (!cancelled) setVerifiedPools([])
-        return
-      }
-      const checks = await Promise.all(
-        rawPools.map(async (p) => {
-          const t0 = toAddr(p.token0?.id ?? (p as any).token0?.address)
-          const t1 = toAddr(p.token1?.id ?? (p as any).token1?.address)
-          const [ok0, ok1] = await Promise.all([isWhitelisted(t0), isWhitelisted(t1)])
-          return ok0 && ok1 ? p : null
-        }),
-      )
-      if (!cancelled) setVerifiedPools(checks.filter(Boolean) as TablePool[])
-    }
-
-    run()
-    return () => {
-      cancelled = true
-    }
-  }, [rawPools])
-
-  return { loading, errorV2, errorV3, errorV4, pools: verifiedPools, loadMore }
 }

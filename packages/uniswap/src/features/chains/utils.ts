@@ -219,16 +219,29 @@ export function getEnabledChains({
   connectedWalletChainIds?: UniverseChainId[]
   includeTestnets?: boolean
 }): EnabledChainsInfo {
-  const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
-    if (PRIMEA_ONLY) {
-      return {
-        chains: [UniverseChainId.Primea],
-        gqlChains: [],
-        defaultChainId: UniverseChainId.Primea,
-        isTestnetModeEnabled: false,
-      }
+  // Primea Phase 1: Primea-only runtime (no other chains, no Uniswap backend)
+  if (PRIMEA_ONLY) {
+    return {
+      chains: [UniverseChainId.Primea],
+      // IMPORTANT: you have backendSupported=false for Primea; keep gqlChains empty.
+      gqlChains: [],
+      defaultChainId: UniverseChainId.Primea,
+      isTestnetModeEnabled: false,
     }
- 
+  }
+
+  // Previous (broken) approach: returning an object inside Array.filter()
+//   const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
+//     if (PRIMEA_ONLY) {
+//       return {
+//         chains: [UniverseChainId.Primea],
+//         gqlChains: [],
+//         defaultChainId: UniverseChainId.Primea,
+//         isTestnetModeEnabled: false,
+//       }
+//     }
+
+  const enabledChainInfos = ORDERED_CHAINS.filter((chainInfo) => {
     // Filter by platform
     if (platform !== undefined && platform !== chainInfo.platform) {
       return false
@@ -251,6 +264,7 @@ export function getEnabledChains({
 
     return true
   })
+
 
   // Extract chain IDs and GQL chains from filtered results
   const chains = enabledChainInfos.map((chainInfo) => chainInfo.id)
