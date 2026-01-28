@@ -197,10 +197,24 @@ export default defineConfig(({ mode }) => {
           }
         },
       },
-      DEPLOY_TARGET === 'cloudflare'
+            // Phase 1 (Primea local dev): disable Cloudflare/miniflare in dev
+      // DEPLOY_TARGET === 'cloudflare'
+      //   ? cloudflare({
+      //       configPath: './wrangler-vite-worker.jsonc',
+      //       // Workaround for cloudflare plugin bug: explicitly set environment name based on CLOUDFLARE_ENV
+      //       viteEnvironment:
+      //         process.env.CLOUDFLARE_ENV === 'production'
+      //           ? { name: 'app' }
+      //           : process.env.CLOUDFLARE_ENV === 'staging'
+      //             ? { name: 'app_staging' }
+      //             : undefined,
+      //     })
+      //   : undefined,
+
+      // Only enable Cloudflare plugin for production builds
+      isProduction && DEPLOY_TARGET === 'cloudflare'
         ? cloudflare({
             configPath: './wrangler-vite-worker.jsonc',
-            // Workaround for cloudflare plugin bug: explicitly set environment name based on CLOUDFLARE_ENV
             viteEnvironment:
               process.env.CLOUDFLARE_ENV === 'production'
                 ? { name: 'app' }
@@ -209,6 +223,7 @@ export default defineConfig(({ mode }) => {
                   : undefined,
           })
         : undefined,
+
     ].filter(Boolean as unknown as <T>(x: T) => x is NonNullable<T>),
 
     optimizeDeps: {
