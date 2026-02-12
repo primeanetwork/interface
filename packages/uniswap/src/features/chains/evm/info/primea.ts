@@ -22,15 +22,48 @@ import { ElementName } from 'uniswap/src/features/telemetry/constants'
  * - WGOLDPN9 is the wrapped native token (WETH9 equivalent)
  */
 
+export const PRIMEA_TOKEN_ADDRESSES = {
+  WGOLDPN9: '0x94EeF39C36552074924f5D49Ec4b328C60aE62EE',
+  USDP: '0x9c0758e5c6e658f28f8e3D93f6402595A2c5209F',
+  PRIM: '0xe855adB2C4058c6804c7D815354A53418D5Ab509',
+  SILVERPN: '0xf2052Ca4368c2704A4e40f78a6C28F8dabC4F518',
+  APPLP: '0x3a8f7DbD63eA169cfE1D597be0130fe68e0c86f9',
+} as const
+
+export const PRIMEA_PERIPHERY_ADDRESSES = {
+  UniswapV3Factory: '0x27E6457d940edC0A1295b518fcd697E3a83dbC12',
+  SwapRouter: '0x945faF172d69CF1FF36608A2f99c5d670C14c249',
+  NonfungiblePositionManager: '0xC37E34E6534f55562521670a4477220A0c43a235',
+  QuoterV2: '0x78fD77468aF04a0609af6BFa7c21fa337A5329C1',
+  TickLens: '0xB666Fac4593928e694bAf9A632C571EfF28bc3aD',
+  PeripheryMulticall: '0x6Bef4741D8C089807bcdCae6E07B9573Ff0D00ee',
+} as const
+
+export const PRIMEA_FACTORY_INIT_CODE_HASH =
+  '0xd3e7f58b9af034cfa7a0597e539bae7c6b393817a47a6fc1e1503cd6eaffe22a' as const
+
 const tokens = buildChainTokens({
   stables: {
     // USDP – Primea USD (canonical stable)
-    USDC: new Token(
+    USDC: new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.USDP, 18, 'USDP', 'Primea USD'),
+  },
+  // If your UI uses these token groups for routing/UX, keep them explicit
+  other: {
+    PRIM: new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.PRIM, 18, 'PRIM', 'Primea'),
+    SILVERPN: new Token(
       UniverseChainId.Primea,
-      '0xe855adB2C4058c6804c7D815354A53418D5Ab509',
+      PRIMEA_TOKEN_ADDRESSES.SILVERPN,
       18,
-      'USDP',
-      'Primea USD',
+      'SILVERPN',
+      'Primea Silver',
+    ),
+    APPLP: new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.APPLP, 18, 'APPLP', 'Apple Prime'),
+    WGOLDPN9: new Token(
+      UniverseChainId.Primea,
+      PRIMEA_TOKEN_ADDRESSES.WGOLDPN9,
+      18,
+      'WGOLDPN9',
+      'Wrapped GOLDPN',
     ),
   },
 })
@@ -77,39 +110,26 @@ export const PRIMEA_CHAIN_INFO = {
     [RPCType.Public]: { http: ['https://rpc.primeanetwork.com'] },
     [RPCType.Default]: { http: ['https://rpc.primeanetwork.com'] },
     [RPCType.Interface]: { http: ['https://rpc.primeanetwork.com'] },
+    // Optional but helpful if the type supports it:
+    // [RPCType.Fallback]: { http: ['https://rpc.primeanetwork.com'] },
   },
 
   // Pricing heuristics (used by UI, even without backend)
-  spotPriceStablecoinAmountOverride: CurrencyAmount.fromRawAmount(tokens.USDC, 100e18),
+  spotPriceStablecoinAmountOverride: CurrencyAmount.fromRawAmount(tokens.USDC, 100n * 10n ** 18n),
   tokens,
 
   statusPage: undefined,
   supportsV4: true,
   urlParam: 'primea',
 
-  // ✅ Real wrapped native token (WGOLDPN9)
+  // ✅ Wrapped native token (WGOLDPN9)
   wrappedNativeCurrency: {
     name: 'Wrapped GOLDPN',
-    symbol: 'WGOLDPN',
+    symbol: 'WGOLDPN9',
     decimals: 18,
-    address: '0x3a8f7DbD63eA169cfE1D597be0130fe68e0c86f9',
+    address: PRIMEA_TOKEN_ADDRESSES.WGOLDPN9,
+    logo: BNB_LOGO, // replace later with WGOLDPN logo
   },
 
   tradingApiPollingIntervalMs: 500,
 } as const satisfies UniverseChainInfo
-
-// Optional exports for reuse elsewhere (UI / scripts / diagnostics)
-export const PRIMEA_TOKEN_ADDRESSES = {
-  PRIM: '0x94EeF39C36552074924f5D49Ec4b328C60aE62EE',
-  USDP: '0xe855adB2C4058c6804c7D815354A53418D5Ab509',
-  KAGP: '0x9c0758e5c6e658f28f8e3D93f6402595A2c5209F',
-  APPLP: '0xf2052Ca4368c2704A4e40f78a6C28F8dabC4F518',
-}
-
-export const PRIMEA_PERIPHERY_ADDRESSES = {
-  UniswapV3Factory: '0x27E6457d940edC0A1295b518fcd697E3a83dbC12',
-  SwapRouter: '0xeE6C964c1c210D63429cE15DC2D692f08C832d47',
-  NonfungiblePositionManager: '0xD01379551f70B766D9008Fa182c0d076Df89cEC7',
-  QuoterV2: '0xd31ADCD62bfb5b891a3389B6E951415fA108fDe6',
-  TickLens: '0xff2E8c17b8dA0960efF5c6b38A1Abf5AfF3cA856',
-}
