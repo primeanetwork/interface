@@ -1,5 +1,6 @@
 // Ordering is intentional and must be preserved: sideEffects followed by functionality.
 import 'sideEffects'
+import './primea-fonts.css'
 
 import { getDeviceId } from '@amplitude/analytics-browser'
 import { ApolloProvider } from '@apollo/client'

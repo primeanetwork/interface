@@ -115,7 +115,7 @@ export const PRIMEA_CHAIN_INFO = {
   },
 
   // Pricing heuristics (used by UI, even without backend)
-  spotPriceStablecoinAmountOverride: CurrencyAmount.fromRawAmount(tokens.USDC, 100n * 10n ** 18n),
+  spotPriceStablecoinAmountOverride: CurrencyAmount.fromRawAmount(tokens.USDC, '100000000000000000000'),
   tokens,
 
   statusPage: undefined,
