@@ -22,6 +22,7 @@ export const BlockNumberContext = createContext<
     }
   | typeof MISSING_PROVIDER
 >(MISSING_PROVIDER)
+
 function useBlockNumberContext() {
   const blockNumber = useContext(BlockNumberContext)
   if (blockNumber === MISSING_PROVIDER) {
@@ -29,27 +30,35 @@ function useBlockNumberContext() {
   }
   return blockNumber
 }
+
 export function useFastForwardBlockNumber(): (block: number) => void {
   return useBlockNumberContext().fastForward
 }
+
 /** Requires that BlockUpdater be installed in the DOM tree. */
 export default function useBlockNumber(): number | undefined {
   return useBlockNumberContext().block
 }
+
 export function useMainnetBlockNumber(): number | undefined {
   return useBlockNumberContext().mainnetBlock
 }
+
 export function BlockNumberProvider({ children }: PropsWithChildren) {
   const account = useAccount()
   const multicallUpdaterSwapChainId = useAtomValue(multicallUpdaterSwapChainIdAtom)
   const multicallChainId = multicallUpdaterSwapChainId ?? account.chainId
+
   const provider = useEthersProvider({ chainId: multicallChainId })
+
   const [{ chainId, block, mainnetBlock }, setChainBlock] = useState<{
     chainId?: number
     block?: number
     mainnetBlock?: number
   }>({})
+
   const activeBlock = chainId === multicallChainId ? block : undefined
+
   const onChainBlock = useCallback((chainId: number | undefined, block: number) => {
     setChainBlock((chainBlock) => {
       if (chainBlock.chainId === chainId) {
@@ -65,6 +74,7 @@ export function BlockNumberProvider({ children }: PropsWithChildren) {
       return chainBlock
     })
   }, [])
+
   // Poll for block number on the active provider.
   const windowVisible = useIsWindowVisible()
   useEffect(() => {
@@ -76,17 +86,27 @@ export function BlockNumberProvider({ children }: PropsWithChildren) {
         // If chainId hasn't changed, don't invalidate the reference, as it will trigger re-fetching of still-valid data.
         return chainBlock
       })
+
       const onBlock = (block: number) => onChainBlock(multicallChainId, block)
-      provider.on('block', onBlock)
+
+      // Defensive: some provider shims may not expose `.on` / `.removeListener` as expected.
+      const hasOn = typeof (provider as any)?.on === 'function'
+      const hasRemoveListener = typeof (provider as any)?.removeListener === 'function'
+
+      if (!hasOn || !hasRemoveListener) return undefined
+
+      ;(provider as any).on('block', onBlock)
       return () => {
-        provider.removeListener('block', onBlock)
+        ;(provider as any).removeListener('block', onBlock)
       }
     }
     return undefined
   }, [provider, windowVisible, onChainBlock, multicallChainId])
+
   // Poll once for the mainnet block number using the network provider.
   useEffect(() => {
     const mainnetProvider = RPC_PROVIDERS[UniverseChainId.Mainnet]
+
     // Primea-only builds may not ship a mainnet provider. Guard to avoid crashing.
     if (!mainnetProvider) return
 
@@ -100,6 +120,7 @@ export function BlockNumberProvider({ children }: PropsWithChildren) {
       // swallow errors - it's ok if this fails, as we'll try again if we activate mainnet
       .catch(() => undefined)
   }, [onChainBlock])
+
   const value = useMemo(
     () => ({
       fastForward: (update: number) => {
@@ -112,5 +133,6 @@ export function BlockNumberProvider({ children }: PropsWithChildren) {
     }),
     [activeBlock, mainnetBlock, multicallChainId, onChainBlock],
   )
+
   return <BlockNumberContext.Provider value={value}>{children}</BlockNumberContext.Provider>
 }
