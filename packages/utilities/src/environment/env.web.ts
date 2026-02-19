@@ -92,14 +92,23 @@ export function isProdEnv(): boolean {
 }
 
 function createAndLogError(funcName: string): Error {
-  const e = new Error('Unsupported app environment that failed all checks')
+  /*const e = new Error('Unsupported app environment that failed all checks')
   logger.error(e, {
     tags: {
       file: 'utilities/src/environment/env.web.ts',
       function: funcName,
     },
   })
-  return e
+  return e*/
+  const message = 'Unsupported app environment that failed all checks'
+  const extra = {
+    tags: {
+      file: 'utilities/src/environment/env.web.ts',
+      function: funcName,
+    },
+  }
+  extra ? console.error(message, extra) : console.error(message)
+  return new Error(message)
 }
 
 export function isRNDev(): boolean {
