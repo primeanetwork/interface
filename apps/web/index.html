@@ -15,25 +15,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- CSP will be injected here -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-        default-src * data: blob: 'unsafe-inline' 'unsafe-eval';
-        script-src * data: blob: 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval';
-        style-src * data: blob: 'unsafe-inline';
-        img-src * data: blob:;
-        font-src * data: blob:;
-        connect-src * data: blob: ws: wss:;
-        frame-src * data: blob:;
-        media-src * data: blob:;
-        object-src *;
-        worker-src * data: blob:;
-        child-src * data: blob:;
-        form-action *;
-        base-uri *;
-        "
-    />
-
+    
     <link rel="preconnect" href="https://interface.gateway.uniswap.org/" crossorigin/>
     <link rel="preconnect" href="https://mainnet.infura.io/" crossorigin/>
 
