@@ -86,9 +86,17 @@ export function BlockNumberProvider({ children }: PropsWithChildren) {
   }, [provider, windowVisible, onChainBlock, multicallChainId])
   // Poll once for the mainnet block number using the network provider.
   useEffect(() => {
-    RPC_PROVIDERS[UniverseChainId.Mainnet]
+    const mainnetProvider = RPC_PROVIDERS[UniverseChainId.Mainnet]
+    // Primea-only builds may not ship a mainnet provider. Guard to avoid crashing.
+    if (!mainnetProvider) return
+
+    // Defensive: ensure provider implements expected method.
+    // (Some provider shims may not expose getBlockNumber.)
+    if (typeof (mainnetProvider as any).getBlockNumber !== 'function') return
+
+    ;(mainnetProvider as any)
       .getBlockNumber()
-      .then((block) => onChainBlock(UniverseChainId.Mainnet, block))
+      .then((block: number) => onChainBlock(UniverseChainId.Mainnet, block))
       // swallow errors - it's ok if this fails, as we'll try again if we activate mainnet
       .catch(() => undefined)
   }, [onChainBlock])
