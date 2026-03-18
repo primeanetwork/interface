@@ -19,11 +19,11 @@ import { ElementName } from 'uniswap/src/features/telemetry/constants'
  * Notes:
  * - backendSupported = false (no Uniswap Data API / GraphQL backend for Primea yet)
  * - Uses real deployed token + periphery addresses
- * - WGOLDPN9 is the wrapped native token (WETH9 equivalent)
+ * - WGASPN9 is the wrapped native token (WETH9 equivalent)
  */
 
 export const PRIMEA_TOKEN_ADDRESSES = {
-  WGOLDPN9: '0x94EeF39C36552074924f5D49Ec4b328C60aE62EE',
+  WGASPN9: '0x94EeF39C36552074924f5D49Ec4b328C60aE62EE',
   USDP: '0x9c0758e5c6e658f28f8e3D93f6402595A2c5209F',
   PRIM: '0xe855adB2C4058c6804c7D815354A53418D5Ab509',
   SILVERPN: '0xf2052Ca4368c2704A4e40f78a6C28F8dabC4F518',
@@ -58,12 +58,12 @@ const tokens = buildChainTokens({
       'Primea Silver',
     ),
     APPLP: new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.APPLP, 18, 'APPLP', 'Apple Prime'),
-    WGOLDPN9: new Token(
+    WGASPN9: new Token(
       UniverseChainId.Primea,
-      PRIMEA_TOKEN_ADDRESSES.WGOLDPN9,
+      PRIMEA_TOKEN_ADDRESSES.WGASPN9,
       18,
-      'WGOLDPN9',
-      'Wrapped GOLDPN',
+      'WGASPN9',
+      'Wrapped GASPN',
     ),
   },
 })
@@ -96,11 +96,11 @@ export const PRIMEA_CHAIN_INFO = {
   logo: BNB_LOGO, // replace later with Primea logo
 
   nativeCurrency: {
-    name: 'GOLDPN',
-    symbol: 'GOLDPN',
+    name: 'GASPN',
+    symbol: 'GASPN',
     decimals: 18,
     address: DEFAULT_NATIVE_ADDRESS_LEGACY,
-    logo: BNB_LOGO, // replace later with GOLDPN logo
+    logo: BNB_LOGO, // replace later with GASPN logo
   },
 
   networkLayer: NetworkLayer.L1,
@@ -122,13 +122,13 @@ export const PRIMEA_CHAIN_INFO = {
   supportsV4: true,
   urlParam: 'primea',
 
-  // ✅ Wrapped native token (WGOLDPN9)
+  // ✅ Wrapped native token (WGASPN9)
   wrappedNativeCurrency: {
-    name: 'Wrapped GOLDPN',
-    symbol: 'WGOLDPN9',
+    name: 'Wrapped GASPN',
+    symbol: 'WGASPN9',
     decimals: 18,
-    address: PRIMEA_TOKEN_ADDRESSES.WGOLDPN9,
-    logo: BNB_LOGO, // replace later with WGOLDPN logo
+    address: PRIMEA_TOKEN_ADDRESSES.WGASPN9,
+    logo: BNB_LOGO, // replace later with WGASPN logo
   },
 
   tradingApiPollingIntervalMs: 500,
