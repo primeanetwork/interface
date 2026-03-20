@@ -1,6 +1,11 @@
-import { QueryClient, UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
+import { QueryClient, UseQueryResult, skipToken, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
 import { GetSwappableTokensResponse } from 'uniswap/src/data/tradingApi/__generated__'
+import type { TradeableAsset } from 'uniswap/src/entities/assets'
+import {
+  getTokenAddressFromChainForTradingApi,
+  toTradingApiSupportedChainId,
+} from 'uniswap/src/features/transactions/swap/utils/tradingApi'
 import { ReactQueryCacheKey } from 'utilities/src/reactQuery/cache'
 
 export interface SwappableTokensParams {
@@ -52,4 +57,34 @@ export function getSwappableTokensQueryData({
   queryClient: QueryClient
 }): GetSwappableTokensResponse | undefined {
   return queryClient.getQueryData<GetSwappableTokensResponse>(getQueryKey(params))
+}
+
+// Prefetches swappable tokens into the React Query cache so that
+// checkIsBridgePair can perform a synchronous cache read when the
+// user opens the token selector.
+// Accepts a TradeableAsset (as used in SwapFormScreenStoreContextProvider)
+// and derives the SwappableTokensParams internally.
+export function usePrefetchSwappableTokens(asset: TradeableAsset | undefined): void {
+  const queryClient = useQueryClient()
+
+  if (!asset) {
+    return
+  }
+
+  const tokenIn = getTokenAddressFromChainForTradingApi(asset.address, asset.chainId)
+  const tokenInChainId = toTradingApiSupportedChainId(asset.chainId)
+
+  if (!tokenIn || !tokenInChainId) {
+    return
+  }
+
+  const params: SwappableTokensParams = { tokenIn, tokenInChainId }
+  const cached = queryClient.getQueryData<GetSwappableTokensResponse>(getQueryKey(params))
+
+  if (!cached) {
+    queryClient.prefetchQuery({
+      queryKey: getQueryKey(params),
+      queryFn: () => fetchLocalSwappableTokens(params),
+    })
+  }
 }
