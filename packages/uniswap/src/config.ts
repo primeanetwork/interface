@@ -97,7 +97,7 @@ const _config: Config = {
   alchemyApiKey: PRIMEA_PHASE1 ? '' : process.env.REACT_APP_ALCHEMY_API_KEY || process.env.ALCHEMY_API_KEY || '',
 
   // amplitudeProxyUrlOverride: process.env.AMPLITUDE_PROXY_URL_OVERRIDE || AMPLITUDE_PROXY_URL_OVERRIDE,
-  amplitudeProxyUrlOverride: PRIMEA_PHASE1 ? '' : process.env.AMPLITUDE_PROXY_URL_OVERRIDE || '',
+  amplitudeProxyUrlOverride: 'https://api2.amplitude.com/2/httpapi',
 
   // apiBaseUrlOverride: process.env.API_BASE_URL_OVERRIDE || API_BASE_URL_OVERRIDE,
   // NOTE: Keep as-is; you may point this to YOUR own API later.
