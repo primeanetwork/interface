@@ -39,7 +39,7 @@ export function useTradingApiSwappableTokensQuery({
   ...rest
 }: UseQueryApiHelperHookArgs<SwappableTokensParams, GetSwappableTokensResponse>): UseQueryResult<GetSwappableTokensResponse> {
   return useQuery<GetSwappableTokensResponse>({
-    queryKey: params ? getQueryKey(params) : [],
+    queryKey: getQueryKey(params ?? { tokenIn: "", tokenInChainId: 0 }),
     queryFn: params
       ? async () => fetchLocalSwappableTokens(params)
       : skipToken,
