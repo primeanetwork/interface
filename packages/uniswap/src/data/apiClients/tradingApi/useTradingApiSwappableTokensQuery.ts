@@ -1,4 +1,4 @@
-import { UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
+import { QueryClient, UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
 import { GetSwappableTokensResponse } from 'uniswap/src/data/tradingApi/__generated__'
 import { ReactQueryCacheKey } from 'utilities/src/reactQuery/cache'
@@ -25,17 +25,31 @@ async function fetchLocalSwappableTokens(params: SwappableTokensParams): Promise
   }
 }
 
+function getQueryKey(params: SwappableTokensParams): unknown[] {
+  return [ReactQueryCacheKey.TradingApi, 'local-swappable-tokens', params]
+}
+
 export function useTradingApiSwappableTokensQuery({
   params,
   ...rest
 }: UseQueryApiHelperHookArgs<SwappableTokensParams, GetSwappableTokensResponse>): UseQueryResult<GetSwappableTokensResponse> {
-  const queryKey = [ReactQueryCacheKey.TradingApi, 'local-swappable-tokens', params]
-
   return useQuery<GetSwappableTokensResponse>({
-    queryKey,
+    queryKey: params ? getQueryKey(params) : [],
     queryFn: params
       ? async () => fetchLocalSwappableTokens(params)
       : skipToken,
     ...rest,
   })
+}
+
+// Synchronous cache read used by checkIsBridgePair to determine bridge eligibility
+// without triggering a network request. Returns undefined if not yet cached.
+export function getSwappableTokensQueryData({
+  params,
+  queryClient,
+}: {
+  params: SwappableTokensParams
+  queryClient: QueryClient
+}): GetSwappableTokensResponse | undefined {
+  return queryClient.getQueryData<GetSwappableTokensResponse>(getQueryKey(params))
 }
