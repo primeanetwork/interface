@@ -4,6 +4,7 @@ import { getDatadogApolloLink } from 'utilities/src/logger/datadog/datadogLink'
 
 const API_URL = process.env.REACT_APP_AWS_API_ENDPOINT
 
+//update this to use the new API_URL
 // API_URL may be absent during local dev or when self-hosting without a subgraph.
 // The app will still function — queries will simply return no data until a subgraph is configured.
 if (!API_URL) {
