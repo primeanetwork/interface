@@ -86,7 +86,10 @@ interface ChainTheme {
   textColor: string
 }
 
-const CHAIN_THEME_LIGHT: Record<UniverseChainId, ChainTheme> = {
+// Fallback theme for chains not in the map (e.g. custom chains like Primea)
+const CHAIN_THEME_FALLBACK: ChainTheme = { bgColor: '#102E4A', textColor: '#88CCFF' }
+
+const CHAIN_THEME_LIGHT: Record<number, ChainTheme> = {
   [UniverseChainId.Mainnet]: { bgColor: '#6B8AFF33', textColor: '#6B8AFF' },
   [UniverseChainId.ArbitrumOne]: { bgColor: '#00A3FF33', textColor: '#00A3FF' },
   [UniverseChainId.Avalanche]: { bgColor: '#E8414233', textColor: '#E84142' },
@@ -105,9 +108,11 @@ const CHAIN_THEME_LIGHT: Record<UniverseChainId, ChainTheme> = {
   [UniverseChainId.WorldChain]: { bgColor: 'rgba(0, 0, 0, 0.12)', textColor: '#000000' },
   [UniverseChainId.Zksync]: { bgColor: 'rgba(54, 103, 246, 0.12)', textColor: '#3667F6' },
   [UniverseChainId.Zora]: { bgColor: 'rgba(0, 0, 0, 0.12)', textColor: '#000000' },
+  // Primea Network
+  698369: { bgColor: '#102E4A', textColor: '#88CCFF' },
 }
 
-const CHAIN_THEME_DARK: Record<UniverseChainId, ChainTheme> = {
+const CHAIN_THEME_DARK: Record<number, ChainTheme> = {
   ...CHAIN_THEME_LIGHT,
   [UniverseChainId.Blast]: { bgColor: 'rgba(252, 252, 3, 0.12)', textColor: 'rgba(252, 252, 3, 1) ' },
   [UniverseChainId.Celo]: { bgColor: '#FCFF5299', textColor: '#655947' },
@@ -115,11 +120,13 @@ const CHAIN_THEME_DARK: Record<UniverseChainId, ChainTheme> = {
   [UniverseChainId.WorldChain]: { bgColor: 'rgba(255, 255, 255, 0.12)', textColor: '#FFFFFF' },
   [UniverseChainId.Zksync]: { bgColor: 'rgba(97, 137, 255, 0.12)', textColor: '#6189FF' },
   [UniverseChainId.Zora]: { bgColor: 'rgba(255, 255, 255, 0.12)', textColor: '#FFFFFF' },
+  // Primea Network
+  698369: { bgColor: '#102E4A', textColor: '#FFD700' },
 }
 
 function useChainTheme(chainId: UniverseChainId): ChainTheme {
   const isDarkMode = useIsDarkMode()
-  return isDarkMode ? CHAIN_THEME_LIGHT[chainId] : CHAIN_THEME_DARK[chainId]
+  return (isDarkMode ? CHAIN_THEME_LIGHT[chainId] : CHAIN_THEME_DARK[chainId]) ?? CHAIN_THEME_FALLBACK
 }
 
 function MaybeExternalBridgeCard({ chainId }: { chainId: UniverseChainId }) {

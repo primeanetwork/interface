@@ -43,10 +43,10 @@ function createWagmiConnectors(params: {
     ...(isTestEnv() && !isPlaywrightEnv() ? [] : [walletConnect(WC_PARAMS)]),
     embeddedWallet(),
     coinbaseWallet({
-      appName: 'Uniswap',
+      appName: 'PrimeaNetwork',
       // CB SDK doesn't pass the parent origin context to their passkey site
       // Flagged to CB team and can remove UNISWAP_WEB_URL once fixed
-      appLogoUrl: `${UNISWAP_WEB_URL}${UNISWAP_LOGO}`,
+      appLogoUrl: `https://app.primeanetwork.com${UNISWAP_LOGO}`,
       reloadOnDisconnect: false,
     }),
     safe(),
