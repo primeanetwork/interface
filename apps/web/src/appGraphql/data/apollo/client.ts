@@ -10,7 +10,7 @@ if (!API_URL) {
 
 const httpLink: ApolloLink = API_URL
   ? new HttpLink({ uri: API_URL })
-  : new ApolloLink(() => new Observable((observer) => { observer.complete() }))
+  : new ApolloLink(() => new Observable((observer) => { observer.next({ data: {} }); observer.complete() }))
 
 const datadogLink = getDatadogApolloLink()
 

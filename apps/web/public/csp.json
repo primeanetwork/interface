@@ -132,11 +132,13 @@
     "https://*.primeanetwork.com",
     "https://*.uniswap.org",
     "wss://*.uniswap.org",
+    "wss://*.primeanetwork.com",
     "wss://relay.walletconnect.com",
     "wss://relay.walletconnect.org",
     "wss://ws-us3.pusher.com/",
     "wss://www.walletlink.org",
-    "wss://nbstream.binance.com"
+    "wss://nbstream.binance.com",
+    "https://api2.amplitude.com"
   ],
   "workerSrc": [
     "'self'",
