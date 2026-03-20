@@ -16,6 +16,7 @@ import {
   WETH_AVALANCHE,
   WRAPPED_NATIVE_CURRENCY,
 } from 'uniswap/src/constants/tokens'
+import { PRIMEA_CHAIN_INFO } from 'uniswap/src/features/chains/evm/info/primea'
 import { UniverseChainId } from 'uniswap/src/features/chains/types'
 
 type ChainTokenList = {
@@ -54,6 +55,13 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     USDT_AVALANCHE,
     WETH_AVALANCHE,
   ],
+  [UniverseChainId.Primea]: [
+    PRIMEA_CHAIN_INFO.tokens.USDC,
+    PRIMEA_CHAIN_INFO.tokens.PRIM,
+    PRIMEA_CHAIN_INFO.tokens.WGASPN9,
+    PRIMEA_CHAIN_INFO.tokens.SILVERPN,
+    PRIMEA_CHAIN_INFO.tokens.APPLP,
+  ],
 }
 
 export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
@@ -64,5 +72,9 @@ export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
     ],
     [USDC_MAINNET, USDT],
     [DAI, USDT],
+  ],
+  [UniverseChainId.Primea]: [
+    [PRIMEA_CHAIN_INFO.tokens.USDC, PRIMEA_CHAIN_INFO.tokens.WGASPN9],
+    [PRIMEA_CHAIN_INFO.tokens.PRIM, PRIMEA_CHAIN_INFO.tokens.WGASPN9],
   ],
 }

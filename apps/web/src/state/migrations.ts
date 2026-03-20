@@ -95,7 +95,7 @@ export const migrations: MigrationManifest = {
   49: migration49,
 } as const
 
-export const PERSIST_VERSION = 49
+export const PERSIST_VERSION = 50
 
 export const INDEXED_DB_REDUX_TABLE_NAME = 'redux'
 
