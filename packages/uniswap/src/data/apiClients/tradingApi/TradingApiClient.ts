@@ -384,20 +384,29 @@ function chunkWalletAddresses(params: {
   return chunks
 }
 
+// export async function checkWalletDelegationWithoutBatching(
+//   params: WalletCheckDelegationRequestBody,
+// ): Promise<WalletCheckDelegationResponseBody> {
+//   return await TradingApiClient.post<WalletCheckDelegationResponseBody>(
+//     uniswapUrls.tradingApiPaths.wallet.checkDelegation,
+//     {
+//       body: JSON.stringify({
+//         ...params,
+//       }),
+//       headers: {
+//         ...getFeatureFlaggedHeaders(),
+//       },
+//     },
+//   )
+// }
+
 export async function checkWalletDelegationWithoutBatching(
-  params: WalletCheckDelegationRequestBody,
+  _params: WalletCheckDelegationRequestBody,
 ): Promise<WalletCheckDelegationResponseBody> {
-  return await TradingApiClient.post<WalletCheckDelegationResponseBody>(
-    uniswapUrls.tradingApiPaths.wallet.checkDelegation,
-    {
-      body: JSON.stringify({
-        ...params,
-      }),
-      headers: {
-        ...getFeatureFlaggedHeaders(),
-      },
-    },
-  )
+  return {
+    requestId: '',
+    delegationDetails: {},
+  }
 }
 
 function mergeDelegationResponses(responses: WalletCheckDelegationResponseBody[]): WalletCheckDelegationResponseBody {
@@ -432,43 +441,52 @@ export type CheckWalletDelegation = (
   params: WalletCheckDelegationRequestBody,
 ) => Promise<WalletCheckDelegationResponseBody>
 
+// export async function checkWalletDelegation(
+//   params: WalletCheckDelegationRequestBody,
+//   batchThreshold: number = DEFAULT_CHECK_VALIDATIONS_BATCH_THRESHOLD,
+// ): Promise<WalletCheckDelegationResponseBody> {
+//   const { walletAddresses, chainIds } = params
+
+//   // If no wallet addresses provided, no need to make a call to backend
+//   if (!walletAddresses || walletAddresses.length === 0) {
+//     return {
+//       requestId: '',
+//       delegationDetails: {},
+//     }
+//   }
+
+//   // Ensure batchThreshold is at least the number of chain IDs
+//   const effectiveBatchThreshold = Math.max(batchThreshold, chainIds.length)
+
+//   const totalCombinations = walletAddresses.length * chainIds.length
+
+//   // If under threshold, make a single request
+//   if (totalCombinations <= effectiveBatchThreshold) {
+//     return await checkWalletDelegationWithoutBatching(params)
+//   }
+
+//   // Split into batches
+//   const walletChunks = chunkWalletAddresses({ walletAddresses, chainIds, batchThreshold: effectiveBatchThreshold })
+
+//   // Make batched requests
+//   const batchPromises = walletChunks.map((chunk) =>
+//     checkWalletDelegationWithoutBatching({
+//       walletAddresses: chunk,
+//       chainIds,
+//     }),
+//   )
+
+//   const responses = await Promise.all(batchPromises)
+
+//   // Merge all responses
+//   return mergeDelegationResponses(responses)
+// }
+
 export async function checkWalletDelegation(
-  params: WalletCheckDelegationRequestBody,
-  batchThreshold: number = DEFAULT_CHECK_VALIDATIONS_BATCH_THRESHOLD,
+  _params: WalletCheckDelegationRequestBody,
 ): Promise<WalletCheckDelegationResponseBody> {
-  const { walletAddresses, chainIds } = params
-
-  // If no wallet addresses provided, no need to make a call to backend
-  if (!walletAddresses || walletAddresses.length === 0) {
-    return {
-      requestId: '',
-      delegationDetails: {},
-    }
+  return {
+    requestId: '',
+    delegationDetails: {},
   }
-
-  // Ensure batchThreshold is at least the number of chain IDs
-  const effectiveBatchThreshold = Math.max(batchThreshold, chainIds.length)
-
-  const totalCombinations = walletAddresses.length * chainIds.length
-
-  // If under threshold, make a single request
-  if (totalCombinations <= effectiveBatchThreshold) {
-    return await checkWalletDelegationWithoutBatching(params)
-  }
-
-  // Split into batches
-  const walletChunks = chunkWalletAddresses({ walletAddresses, chainIds, batchThreshold: effectiveBatchThreshold })
-
-  // Make batched requests
-  const batchPromises = walletChunks.map((chunk) =>
-    checkWalletDelegationWithoutBatching({
-      walletAddresses: chunk,
-      chainIds,
-    }),
-  )
-
-  const responses = await Promise.all(batchPromises)
-
-  // Merge all responses
-  return mergeDelegationResponses(responses)
 }

@@ -1,18 +1,22 @@
-import { UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
-import { uniswapUrls } from 'uniswap/src/constants/urls'
+import { UseQueryResult, useQuery } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
-import { ScreenRequest, ScreenResponse, fetchTrmScreen } from 'uniswap/src/data/apiClients/uniswapApi/UniswapApiClient'
+import { ScreenRequest, ScreenResponse } from 'uniswap/src/data/apiClients/uniswapApi/UniswapApiClient'
 import { ReactQueryCacheKey } from 'utilities/src/reactQuery/cache'
 
+// TODO: Replace with TRM Labs enterprise key or Chainalysis Oracle proxy
+// when compliance screening is ready for production.
+// For now, all wallets are returned as unblocked.
 export function useTrmScreenQuery({
   params,
   ...rest
 }: UseQueryApiHelperHookArgs<ScreenRequest, ScreenResponse>): UseQueryResult<ScreenResponse> {
-  const queryKey = [ReactQueryCacheKey.UniswapApi, uniswapUrls.trmPath, params]
+  const queryKey = [ReactQueryCacheKey.UniswapApi, 'trm-stub', params]
 
   return useQuery<ScreenResponse>({
     queryKey,
-    queryFn: params ? async (): ReturnType<typeof fetchTrmScreen> => await fetchTrmScreen(params) : skipToken,
+    queryFn: async (): Promise<ScreenResponse> => ({
+      block: false,
+    }),
     ...rest,
   })
 }

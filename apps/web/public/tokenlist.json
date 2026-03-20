@@ -1,0 +1,67 @@
+{
+  "name": "PrimeaNetwork Default Token List",
+  "timestamp": "2026-03-19T00:00:00.000Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tokens": [
+    {
+      "chainId": 698369,
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "GASPN",
+      "symbol": "GASPN",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/GASPN.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0x65267D56e74F462ea6b3db368608F5Ddb10ae696",
+      "name": "Wrapped GASPN",
+      "symbol": "WGASPN9",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/WGASPN9.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0xd1bd59B0E7f96f2b0eEF8CB7f8872E60DD02fbCf",
+      "name": "Primea Governance Token",
+      "symbol": "PRIM",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/PRIM.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0x405862E7710019eaE9561Ea03BCA606107BD9B0C",
+      "name": "USD Primea",
+      "symbol": "USDP",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/USDP.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0x353742fBaeCe4fCF662CBeC39E74eE1C4bCff5c5",
+      "name": "Silver Ounce Primea",
+      "symbol": "SILVERPN",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/SILVERPN.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0xE46Bbb06C632B9Ab3706d28A97EcA22690b2923A",
+      "name": "Gold Ounce Primea",
+      "symbol": "GOLDPN",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/GOLDPN.png"
+    },
+    {
+      "chainId": 698369,
+      "address": "0xAf2323c5Ef06c7EedC04EbcEd1E804c4625b851d",
+      "name": "APPL Stock Primea",
+      "symbol": "APPLP",
+      "decimals": 18,
+      "logoURI": "https://app.primeanetwork.com/tokens/APPLP.png"
+    }
+  ]
+}
