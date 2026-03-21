@@ -52,6 +52,7 @@ import { CurrencyInfo, TokenList } from 'uniswap/src/features/dataApi/types'
 import { buildCurrencyInfo } from 'uniswap/src/features/dataApi/utils/buildCurrency'
 import { isNativeCurrencyAddress } from 'uniswap/src/utils/currencyId'
 import { isSameAddress } from 'utilities/src/addresses'
+import { PRIMEA_TOKEN_ADDRESSES } from 'uniswap/src/features/chains/evm/info/primea'
 
 type ChainCurrencyList = {
   readonly [chainId: number]: CurrencyInfo[]
@@ -176,6 +177,16 @@ export const COMMON_BASES: ChainCurrencyList = {
     nativeOnChain(UniverseChainId.Zora),
     WRAPPED_NATIVE_CURRENCY[UniverseChainId.Zora] as Token,
     USDC_ZORA,
+  ].map(buildPartialCurrencyInfo),
+
+  [UniverseChainId.Primea]: [
+    nativeOnChain(UniverseChainId.Primea),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.WGASPN9,  18, 'WGASPN9',  'Wrapped GASPN'),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.USDP,     18, 'USDP',     'Primea USD'),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.PRIM,     18, 'PRIM',     'Primea'),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.SILVERPN, 18, 'SILVERPN', 'Primea Silver'),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.GOLDPN,   18, 'GOLDPN',   'Gold Ounce Primea'),
+    new Token(UniverseChainId.Primea, PRIMEA_TOKEN_ADDRESSES.APPLP,    18, 'APPLP',    'APPL Stock Primea'),
   ].map(buildPartialCurrencyInfo),
 }
 
