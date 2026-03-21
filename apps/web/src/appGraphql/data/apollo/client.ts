@@ -8,9 +8,22 @@ if (!API_URL) {
   console.warn('[PrimeaNetwork] REACT_APP_AWS_API_ENDPOINT is not set. GraphQL portfolio queries will be disabled.')
 }
 
+// Primea: no subgraph — return null for each queried field by operation name
+// to satisfy Apollo InMemoryCache schema validation (empty {} causes message:12 errors)
+const primeaNoopLink = new ApolloLink((operation) =>
+  new Observable((observer) => {
+    const field = operation.operationName
+      ? operation.operationName.charAt(0).toLowerCase() + operation.operationName.slice(1)
+      : null
+    const data = field ? { [field]: null } : {}
+    observer.next({ data })
+    observer.complete()
+  })
+)
+
 const httpLink: ApolloLink = API_URL
   ? new HttpLink({ uri: API_URL })
-  : new ApolloLink(() => new Observable((observer) => { observer.next({ data: {} }); observer.complete() }))
+  : primeaNoopLink
 
 const datadogLink = getDatadogApolloLink()
 
