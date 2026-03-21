@@ -1,4 +1,4 @@
-import { QueryClient, UseQueryResult, skipToken, useQuery, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, UseQueryResult, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
 import { GetSwappableTokensResponse } from 'uniswap/src/data/tradingApi/__generated__'
 import type { TradeableAsset } from 'uniswap/src/entities/assets'
@@ -48,7 +48,7 @@ export function useTradingApiSwappableTokensQuery({
 
   return useQuery<GetSwappableTokensResponse>({
     queryKey: getQueryKey(params ?? { tokenIn: '', tokenInChainId: 0 }),
-    queryFn: valid ? async () => fetchLocalSwappableTokens(params) : skipToken,
+    queryFn: async () => (valid ? fetchLocalSwappableTokens(params) : { tokens: [] }),
     ...rest,
     enabled,
   })

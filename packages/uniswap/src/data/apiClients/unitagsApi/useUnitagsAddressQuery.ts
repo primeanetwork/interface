@@ -13,9 +13,11 @@ import { MAX_REACT_QUERY_CACHE_TIME_MS, ONE_MINUTE_MS } from 'utilities/src/time
 
 export function useUnitagsAddressQuery({
   params,
+  enabled: enabledFromProps,
   ...rest
 }: UseQueryApiHelperHookArgs<UnitagAddressRequest, UnitagAddressResponse>): UseQueryResult<UnitagAddressResponse> {
   const queryKey = [ReactQueryCacheKey.UnitagsApi, 'address', params]
+  const enabled = !PRIMEA_ONLY && !!params && (enabledFromProps ?? true)
 
   return useQuery<UnitagAddressResponse>({
     queryKey,
@@ -23,6 +25,7 @@ export function useUnitagsAddressQuery({
     staleTime: ONE_MINUTE_MS,
     gcTime: MAX_REACT_QUERY_CACHE_TIME_MS,
     ...rest,
+    enabled,
   })
 }
 
