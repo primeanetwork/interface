@@ -1,6 +1,7 @@
 import { UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
 import { fetchAddress, fetchUnitagsByAddresses } from 'uniswap/src/data/apiClients/unitagsApi/UnitagsApiClient'
+import { PRIMEA_ONLY } from 'uniswap/src/features/chains/utils'
 import {
   UnitagAddressRequest,
   UnitagAddressResponse,
@@ -27,12 +28,14 @@ export function useUnitagsAddressQuery({
 
 export function useUnitagsAddressesQuery({
   params,
+  enabled: enabledFromProps,
   ...rest
 }: UseQueryApiHelperHookArgs<
   UnitagAddressesRequest,
   UnitagAddressesResponse
 >): UseQueryResult<UnitagAddressesResponse> {
   const queryKey = [ReactQueryCacheKey.UnitagsApi, 'addresses', params]
+  const enabled = !PRIMEA_ONLY && !!params && (enabledFromProps ?? true)
 
   return useQuery<UnitagAddressesResponse>({
     queryKey,
@@ -42,5 +45,6 @@ export function useUnitagsAddressesQuery({
     staleTime: ONE_MINUTE_MS,
     gcTime: MAX_REACT_QUERY_CACHE_TIME_MS,
     ...rest,
+    enabled,
   })
 }

@@ -14,6 +14,10 @@ export interface SwappableTokensParams {
   tokenInChainId: number
 }
 
+function isValidSwappableParams(params: SwappableTokensParams | undefined): params is SwappableTokensParams {
+  return !!params && params.tokenIn.length > 0 && params.tokenInChainId > 0
+}
+
 // Fetches swappable tokens from the hosted PrimeaNetwork token list (same as apps/web default list URL).
 async function fetchLocalSwappableTokens(params: SwappableTokensParams): Promise<GetSwappableTokensResponse> {
   const response = await fetch(PRIMEA_TOKEN_LIST_URL)
@@ -36,14 +40,17 @@ function getQueryKey(params: SwappableTokensParams): unknown[] {
 
 export function useTradingApiSwappableTokensQuery({
   params,
+  enabled: enabledFromProps,
   ...rest
 }: UseQueryApiHelperHookArgs<SwappableTokensParams, GetSwappableTokensResponse>): UseQueryResult<GetSwappableTokensResponse> {
+  const valid = isValidSwappableParams(params)
+  const enabled = (enabledFromProps ?? true) && valid
+
   return useQuery<GetSwappableTokensResponse>({
-    queryKey: getQueryKey(params ?? { tokenIn: "", tokenInChainId: 0 }),
-    queryFn: params
-      ? async () => fetchLocalSwappableTokens(params)
-      : skipToken,
+    queryKey: getQueryKey(params ?? { tokenIn: '', tokenInChainId: 0 }),
+    queryFn: valid ? async () => fetchLocalSwappableTokens(params) : skipToken,
     ...rest,
+    enabled,
   })
 }
 

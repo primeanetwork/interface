@@ -1,15 +1,18 @@
 import { UseQueryResult, skipToken, useQuery } from '@tanstack/react-query'
 import { UseQueryApiHelperHookArgs } from 'uniswap/src/data/apiClients/types'
 import { fetchUsername } from 'uniswap/src/data/apiClients/unitagsApi/UnitagsApiClient'
+import { PRIMEA_ONLY } from 'uniswap/src/features/chains/utils'
 import { UnitagUsernameRequest, UnitagUsernameResponse } from 'uniswap/src/features/unitags/types'
 import { ReactQueryCacheKey } from 'utilities/src/reactQuery/cache'
 import { MAX_REACT_QUERY_CACHE_TIME_MS, ONE_MINUTE_MS } from 'utilities/src/time/time'
 
 export function useUnitagsUsernameQuery({
   params,
+  enabled: enabledFromProps,
   ...rest
 }: UseQueryApiHelperHookArgs<UnitagUsernameRequest, UnitagUsernameResponse>): UseQueryResult<UnitagUsernameResponse> {
   const queryKey = [ReactQueryCacheKey.UnitagsApi, 'username', params]
+  const enabled = !PRIMEA_ONLY && !!params && (enabledFromProps ?? true)
 
   return useQuery<UnitagUsernameResponse>({
     queryKey,
@@ -17,5 +20,6 @@ export function useUnitagsUsernameQuery({
     staleTime: ONE_MINUTE_MS,
     gcTime: MAX_REACT_QUERY_CACHE_TIME_MS,
     ...rest,
+    enabled,
   })
 }

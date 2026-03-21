@@ -5,7 +5,8 @@ import { Chain } from 'uniswap/src/data/graphql/uniswap-data-api/__generated__/t
 import { ALL_CHAIN_IDS, ORDERED_CHAINS, getChainInfo } from 'uniswap/src/features/chains/chainInfo'
 import { EnabledChainsInfo, GqlChainId, NetworkLayer, UniverseChainId } from 'uniswap/src/features/chains/types'
 import { Platform } from 'uniswap/src/features/platforms/types/Platform'
-const PRIMEA_ONLY = true
+/** Primea-only fork: single chain, no Uniswap backend — exported for gating queries off Uniswap infra. */
+export const PRIMEA_ONLY = true
 
 // Some code from the web app uses chainId types as numbers
 // This validates them as coerces into SupportedChainId

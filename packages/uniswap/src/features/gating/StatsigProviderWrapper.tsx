@@ -18,6 +18,8 @@ type StatsigProviderWrapperProps = {
   storageProvider?: StorageProvider
 }
 
+const OFFLINE_STATSIG_SDK_KEY = 'client-primea-offline'
+
 export function StatsigProviderWrapper({
   children,
   options,
@@ -25,19 +27,22 @@ export function StatsigProviderWrapper({
   storageProvider,
   onInit,
 }: StatsigProviderWrapperProps): ReactNode {
-  if (!config.statsigApiKey) {
-    // Primea phase 1 runs without external feature-flagging. If the key is missing,
-    // render the app without Statsig instead of crashing and without triggering network calls.
-    return <>{children}</>
-  }
+  // Primea / no-key builds: hooks still require a StatsigClient in context. Use a placeholder key and
+  // preventAllNetworkTraffic so we never hit gating.interface.gateway.uniswap.org (CSP / independence).
+  const sdkKey = config.statsigApiKey || OFFLINE_STATSIG_SDK_KEY
+  const offlineStatsig = !config.statsigApiKey
 
   const statsigOptions: StatsigOptions = {
     ...statsigBaseConfig,
     storageProvider,
+    networkConfig: {
+      ...statsigBaseConfig.networkConfig,
+      ...(offlineStatsig ? { preventAllNetworkTraffic: true } : {}),
+    },
     ...options,
   }
 
-  const { client, isLoading: isStatsigLoading } = useClientAsyncInit(config.statsigApiKey, user, statsigOptions)
+  const { client, isLoading: isStatsigLoading } = useClientAsyncInit(sdkKey, user, statsigOptions)
 
   useEffect(() => {
     if (isStatsigLoading) {
