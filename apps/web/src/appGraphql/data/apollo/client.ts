@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloLink, HttpLink, Observable, from } from '@apollo/client'
+import { ApolloClient, ApolloLink, HttpLink, from } from '@apollo/client'
 import { setupSharedApolloCache } from 'uniswap/src/data/cache'
 import { getDatadogApolloLink } from 'utilities/src/logger/datadog/datadogLink'
 
@@ -8,18 +8,17 @@ if (!API_URL) {
   console.warn('[PrimeaNetwork] REACT_APP_AWS_API_ENDPOINT is not set. GraphQL portfolio queries will be disabled.')
 }
 
-// Primea: no subgraph — complete without writing anything to Apollo cache
-// observer.next() causes schema validation errors regardless of shape returned;
-// silently completing skips cache write entirely and produces no errors
-const primeaNoopLink = new ApolloLink(() =>
-  new Observable((observer) => {
-    observer.complete()
-  })
-)
+// Primea: no subgraph — return errors so Apollo skips cache write entirely
+// Using error termination prevents both the schema-validation crash (message:12)
+// and the undefined-data crash from complete()-without-next()
+const primeaNoopLink = new ApolloLink((operation, forward) => {
+  if (forward) return forward(operation)
+  return null
+})
 
 const httpLink: ApolloLink = API_URL
   ? new HttpLink({ uri: API_URL })
-  : primeaNoopLink
+  : ApolloLink.empty()
 
 const datadogLink = getDatadogApolloLink()
 
