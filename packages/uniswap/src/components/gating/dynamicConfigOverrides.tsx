@@ -6,8 +6,8 @@ type DynamicConfigOptions = ComponentProps<typeof DynamicConfigDropdown>['option
 
 export const EMBEDDED_WALLET_BASE_URL_OPTIONS: DynamicConfigOptions = [
   {
-    value: 'https://app.uniswap.org',
-    label: 'app.uniswap.org',
+    value: 'https://app.primeanetwork.com',
+    label: 'app.primeanetwork.com',
   },
   {
     value: 'https://ew.unihq.org',

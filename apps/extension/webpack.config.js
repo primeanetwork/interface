@@ -345,8 +345,8 @@ module.exports = (env) => {
                       ...manifest.externally_connectable,
                       matches:
                         BUILD_ENV === 'prod'
-                          ? ['https://app.uniswap.org/*']
-                          : ['https://app.uniswap.org/*', 'https://ew.unihq.org/*', 'https://*.ew.unihq.org/*'],
+                          ? ['https://app.primeanetwork.com/*']
+                          : ['https://app.primeanetwork.com/*', 'https://ew.unihq.org/*', 'https://*.ew.unihq.org/*'],
                     },
                   },
                   null,

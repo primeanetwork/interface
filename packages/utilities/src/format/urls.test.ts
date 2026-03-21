@@ -32,9 +32,9 @@ describe(uriToHttpUrls, () => {
     ])
   })
   it('returns ipns gateways for ipns:// urls', () => {
-    expect(uriToHttpUrls('ipns://app.uniswap.org')).toEqual([
-      'https://ipfs.io/ipns/app.uniswap.org/',
-      'https://hardbin.com/ipns/app.uniswap.org/',
+    expect(uriToHttpUrls('ipns://app.primeanetwork.com')).toEqual([
+      'https://ipfs.io/ipns/app.primeanetwork.com/',
+      'https://hardbin.com/ipns/app.primeanetwork.com/',
     ])
   })
   it('returns empty array for invalid scheme', () => {

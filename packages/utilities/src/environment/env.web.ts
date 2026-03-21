@@ -26,7 +26,7 @@ export function isDevEnv(): boolean {
       // eslint-disable-next-line no-console
       console.warn(
         'Avoid using `isDevEnv()` inside the injected script. Use `__DEV__` instead. ' +
-          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.uniswap.org`). ' +
+          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.primeanetwork.com`). ' +
           'This helper only works reliably when running the app locally but not when publishing the Dev build.',
       )
       return __DEV__
@@ -54,7 +54,7 @@ export function isBetaEnv(): boolean {
       // eslint-disable-next-line no-console
       console.warn(
         'Avoid using `isBetaEnv()` inside the injected script. ' +
-          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.uniswap.org`). ' +
+          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.primeanetwork.com`). ' +
           'This helper always returns `false` when running inside the injected script on other websites.',
       )
       return false
@@ -77,7 +77,7 @@ export function isProdEnv(): boolean {
       // eslint-disable-next-line no-console
       console.warn(
         'Avoid using `isProdEnv()` inside the injected script. ' +
-          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.uniswap.org`). ' +
+          '`chrome.runtime` is only available when the injected script is running inside a trusted site (`app.primeanetwork.com`). ' +
           'This helper always returns `true` when running inside the injected script on other websites.',
       )
       return true
