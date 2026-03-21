@@ -147,10 +147,10 @@ const _config: Config = {
   scantasticApiUrlOverride: process.env.SCANTASTIC_API_URL_OVERRIDE || '',
 
   // statsigApiKey: process.env.REACT_APP_STATSIG_API_KEY || process.env.STATSIG_API_KEY || STATSIG_API_KEY,
-  statsigApiKey: process.env.REACT_APP_STATSIG_API_KEY || process.env.STATSIG_API_KEY || '',
+  statsigApiKey: PRIMEA_PHASE1 ? '' : process.env.REACT_APP_STATSIG_API_KEY || process.env.STATSIG_API_KEY || '',
 
   // statsigProxyUrlOverride: process.env.STATSIG_PROXY_URL_OVERRIDE || STATSIG_PROXY_URL_OVERRIDE,
-  statsigProxyUrlOverride: process.env.STATSIG_PROXY_URL_OVERRIDE || '',
+  statsigProxyUrlOverride: PRIMEA_PHASE1 ? '' : process.env.STATSIG_PROXY_URL_OVERRIDE || '',
 
   // infuraKey: process.env.REACT_APP_INFURA_KEY || INFURA_KEY,
   infuraKey: PRIMEA_PHASE1 ? '' : process.env.REACT_APP_INFURA_KEY || '',

@@ -68,6 +68,8 @@ function useGetMinAmount(chainId?: UniverseChainId, txType?: TransactionType): J
   }
 
   switch (chainId) {
+    case UniverseChainId.Primea:
+      return MIN_L2_FOR_GAS
     case UniverseChainId.Mainnet:
       return MIN_ETH_FOR_GAS
     case UniverseChainId.Sepolia:

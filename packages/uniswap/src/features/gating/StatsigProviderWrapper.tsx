@@ -26,7 +26,9 @@ export function StatsigProviderWrapper({
   onInit,
 }: StatsigProviderWrapperProps): ReactNode {
   if (!config.statsigApiKey) {
-    throw new Error('statsigApiKey is not set')
+    // Primea phase 1 runs without external feature-flagging. If the key is missing,
+    // render the app without Statsig instead of crashing and without triggering network calls.
+    return <>{children}</>
   }
 
   const statsigOptions: StatsigOptions = {
