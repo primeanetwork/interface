@@ -7,16 +7,16 @@ import {
   toTradingApiSupportedChainId,
 } from 'uniswap/src/features/transactions/swap/utils/tradingApi'
 import { ReactQueryCacheKey } from 'utilities/src/reactQuery/cache'
+import { PRIMEA_TOKEN_LIST_URL } from 'uniswap/src/features/chains/evm/info/primea'
 
 export interface SwappableTokensParams {
   tokenIn: string
   tokenInChainId: number
 }
 
-// Fetches swappable tokens from the locally hosted PrimeaNetwork token list.
-// To add or update tokens, edit public/tokenlist.json.
+// Fetches swappable tokens from the hosted PrimeaNetwork token list (same as apps/web default list URL).
 async function fetchLocalSwappableTokens(params: SwappableTokensParams): Promise<GetSwappableTokensResponse> {
-  const response = await fetch('/tokenlist.json')
+  const response = await fetch(PRIMEA_TOKEN_LIST_URL)
   if (!response.ok) {
     throw new Error('Failed to fetch local token list')
   }

@@ -23,6 +23,9 @@ import { ElementName } from 'uniswap/src/features/telemetry/constants'
  * - USDP mapped as USDC for routing/pricing heuristics
  */
 
+/** Canonical hosted token list (swap UI + Redux list updater). */
+export const PRIMEA_TOKEN_LIST_URL = 'https://app.primeanetwork.com/tokenlist.json' as const
+
 export const PRIMEA_TOKEN_ADDRESSES = {
   WGASPN9:  '0x65267D56e74F462ea6b3db368608F5Ddb10ae696',
   USDP:     '0x405862E7710019eaE9561Ea03BCA606107BD9B0C',
