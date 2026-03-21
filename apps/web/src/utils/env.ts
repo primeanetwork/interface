@@ -1,25 +1,25 @@
 import { isBetaEnv, isProdEnv } from 'utilities/src/environment/env'
 
-function isAppUniswapOrg({ hostname }: { hostname: string }): boolean {
-  return hostname === 'app.uniswap.org'
+function isAppPrimeaOrg({ hostname }: { hostname: string }): boolean {
+  return hostname === 'app.primeanetwork.com'
 }
 
-function isAppUniswapStagingOrg({ hostname }: { hostname: string }): boolean {
-  return hostname === 'app.corn-staging.com'
+function isAppPrimeaStagingOrg({ hostname }: { hostname: string }): boolean {
+  return hostname === 'staging.primeanetwork.com'
 }
 
 export function isBrowserRouterEnabled(): boolean {
   if (isProdEnv()) {
     if (
-      isAppUniswapOrg(window.location) ||
-      isAppUniswapStagingOrg(window.location) ||
-      isLocalhost(window.location) // playwright tests
+      isAppPrimeaOrg(window.location) ||
+      isAppPrimeaStagingOrg(window.location) ||
+      isLocalhost(window.location)
     ) {
       return true
     }
-    return false // production builds *not* served through our domains or localhost, eg IPFS
+    return false
   }
-  return true // local dev builds
+  return true
 }
 
 function isLocalhost({ hostname }: { hostname: string }): boolean {
@@ -27,11 +27,10 @@ function isLocalhost({ hostname }: { hostname: string }): boolean {
 }
 
 export function isRemoteReportingEnabled(): boolean {
-  // Disable in e2e test environments
-  if (isBetaEnv() && !isAppUniswapStagingOrg(window.location)) {
+  if (isBetaEnv() && !isAppPrimeaStagingOrg(window.location)) {
     return false
   }
-  if (isProdEnv() && !isAppUniswapOrg(window.location)) {
+  if (isProdEnv() && !isAppPrimeaOrg(window.location)) {
     return false
   }
   return process.env.REACT_APP_ANALYTICS_ENABLED === 'true'

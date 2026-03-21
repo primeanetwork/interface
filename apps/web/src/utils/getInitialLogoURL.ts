@@ -14,6 +14,11 @@ export function getInitialLogoUrl({
   chainId?: number | null
   backupImg?: string | null
 }) {
+  // Primea: always use backupImg (logoURI from tokenlist) — no Uniswap asset repo for Primea tokens
+  if (chainId === UniverseChainId.Primea) {
+    return backupImg ?? undefined
+  }
+
   const networkName = isUniverseChainId(chainId) ? getChainInfo(chainId).assetRepoNetworkName ?? 'ethereum' : 'ethereum'
   const checksummedAddress = isAddress(address)
 
