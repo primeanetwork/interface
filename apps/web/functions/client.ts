@@ -1,16 +1,12 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
-const GRAPHQL_ENDPOINT = 'https://interface.gateway.uniswap.org/v1/graphql'
+import { ApolloClient, ApolloLink, InMemoryCache, Observable } from '@apollo/client'
 
-//TODO: Figure out how to make ApolloClient global variable
+// Primea: stubbed — no Uniswap subgraph available for Primea chain
 export default new ApolloClient({
   connectToDevTools: false,
-  uri: GRAPHQL_ENDPOINT,
-  headers: {
-    'Content-Type': 'application/json',
-    Origin: 'https://app.uniswap.org',
-    'User-Agent':
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.110 Safari/537.36',
-  },
+  link: new ApolloLink(() => new Observable((observer) => {
+    observer.next({ data: {} })
+    observer.complete()
+  })),
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
