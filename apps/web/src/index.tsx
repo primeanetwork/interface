@@ -140,8 +140,8 @@ createRoot(container).render(
               <Router>
                 <I18nextProvider i18n={i18n}>
                   <LanguageProvider>
-                    <Web3Provider>
-                      <StatsigProvider>
+                    <StatsigProvider>
+                      <Web3Provider>
                         <ExternalWalletProvider>
                           <WebUniswapProvider>
                             <GraphqlProviders>
@@ -161,8 +161,8 @@ createRoot(container).render(
                             </GraphqlProviders>
                           </WebUniswapProvider>
                         </ExternalWalletProvider>
-                      </StatsigProvider>
-                    </Web3Provider>
+                      </Web3Provider>
+                    </StatsigProvider>
                   </LanguageProvider>
                 </I18nextProvider>
               </Router>

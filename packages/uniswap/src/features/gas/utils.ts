@@ -136,8 +136,8 @@ export function getActiveGasStrategy({
   if (!config.statsigApiKey || isStatsigReady === false || !getIsStatsigReady()) {
     return DEFAULT_GAS_STRATEGY
   }
-  const config = getStatsigClient().getDynamicConfig(DynamicConfigs.GasStrategies)
-  const gasStrategies = isValidGasStrategies(config.value) ? config.value : undefined
+  const gasConfig = getStatsigClient().getDynamicConfig(DynamicConfigs.GasStrategies)
+  const gasStrategies = isValidGasStrategies(gasConfig.value) ? gasConfig.value : undefined
   const activeStrategy = gasStrategies?.strategies.find(
     (s) => s.conditions.chainId === chainId && s.conditions.types === type && s.conditions.isActive,
   )
