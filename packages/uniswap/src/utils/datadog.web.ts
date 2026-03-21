@@ -141,7 +141,7 @@ export async function initializeDatadog(appName: string): Promise<void> {
       // Datadog has a limited set of accepted symbols in feature flags
       // https://docs.datadoghq.com/real_user_monitoring/guide/setup-feature-flag-data-collection/?tab=reactnative#feature-flag-naming
       flagKey.replaceAll('-', '_'),
-      getStatsigClient().checkGate(flagKey),
+      config.statsigApiKey ? getStatsigClient().checkGate(flagKey) : false,
     )
   }
 
@@ -150,7 +150,7 @@ export async function initializeDatadog(appName: string): Promise<void> {
       // Datadog has a limited set of accepted symbols in feature flags
       // https://docs.datadoghq.com/real_user_monitoring/guide/setup-feature-flag-data-collection/?tab=reactnative#feature-flag-naming
       `experiment_${experiment.replaceAll('-', '_')}`,
-      getStatsigClient().getExperiment(experiment).groupName,
+      config.statsigApiKey ? getStatsigClient().getExperiment(experiment).groupName : 'control',
     )
   }
 }

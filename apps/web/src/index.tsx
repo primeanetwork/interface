@@ -4,7 +4,6 @@ import './primea-fonts.css'
 
 import { getDeviceId } from '@amplitude/analytics-browser'
 import { ApolloProvider } from '@apollo/client'
-import { datadogRum } from '@datadog/browser-rum'
 import { PortalProvider } from '@tamagui/portal'
 import { AssetActivityProvider } from 'appGraphql/data/apollo/AssetActivityProvider'
 import { TokenBalancesProvider } from 'appGraphql/data/apollo/TokenBalancesProvider'
@@ -13,7 +12,6 @@ import { QueryClientPersistProvider } from 'components/PersistQueryClient'
 import Web3Provider from 'components/Web3Provider'
 import { WebUniswapProvider } from 'components/Web3Provider/WebUniswapContext'
 import { ExternalWalletProvider } from 'features/wallet/providers/ExternalWalletProvider'
-import { useAccount } from 'hooks/useAccount'
 import { useDeferredComponent } from 'hooks/useDeferredComponent'
 import { LanguageProvider } from 'i18n/LanguageProvider'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
@@ -104,24 +102,15 @@ function GraphqlProviders({ children }: { children: React.ReactNode }) {
   )
 }
 function StatsigProvider({ children }: PropsWithChildren) {
-  const account = useAccount()
   const statsigUser: StatsigUser = useMemo(
     () => ({
       userID: getDeviceId(),
-      customIDs: { address: account.address ?? '' },
+      // Keep Statsig bootstrap independent of wallet hooks in Primea mode.
+      // Wallet hooks can read feature flags internally and must run under an initialized StatsigProvider.
+      customIDs: { address: '' },
     }),
-    [account.address],
+    [],
   )
-
-  useEffect(() => {
-    datadogRum.setUserProperty('connection', {
-      type: account.connector?.type,
-      name: account.connector?.name,
-      rdns: account.connector?.id,
-      address: account.address,
-      status: account.status,
-    })
-  }, [account])
 
   const onStatsigInit = () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

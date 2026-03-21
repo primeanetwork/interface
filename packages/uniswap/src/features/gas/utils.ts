@@ -8,6 +8,7 @@ import {
   GasStrategyType,
   GasStrategyWithConditions,
 } from 'uniswap/src/features/gating/configs'
+import { config } from 'uniswap/src/config'
 import { getStatsigClient } from 'uniswap/src/features/gating/sdk/statsig'
 import { ValueType, getCurrencyAmount } from 'uniswap/src/features/tokens/getCurrencyAmount'
 
@@ -97,6 +98,9 @@ export function findLocalGasStrategy(
   gasEstimate: GasEstimate,
   type: GasStrategyType,
 ): GasStrategyWithConditions | undefined {
+  if (!config.statsigApiKey) {
+    return undefined
+  }
   const gasStrategies = getStatsigClient().getDynamicConfig(DynamicConfigs.GasStrategies).value as GasStrategies
   return gasStrategies.strategies.find(
     (s) => s.conditions.types === type && areEqualGasStrategies(s.strategy, gasEstimate.strategy),
@@ -114,6 +118,9 @@ function isValidGasStrategies(value: unknown): value is GasStrategies {
 }
 
 function getIsStatsigReady(): boolean {
+  if (!config.statsigApiKey) {
+    return false
+  }
   return getStatsigClient().loadingStatus === 'Ready'
 }
 
@@ -126,7 +133,7 @@ export function getActiveGasStrategy({
   type: GasStrategyType
   isStatsigReady?: boolean
 }): GasStrategy {
-  if (isStatsigReady === false || !getIsStatsigReady()) {
+  if (!config.statsigApiKey || isStatsigReady === false || !getIsStatsigReady()) {
     return DEFAULT_GAS_STRATEGY
   }
   const config = getStatsigClient().getDynamicConfig(DynamicConfigs.GasStrategies)
