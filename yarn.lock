@@ -17596,7 +17596,7 @@ __metadata:
     react-qr-code: 2.0.12
     react-redux: 8.0.5
     react-refresh: 0.14.0
-    react-router: 7.6.3
+    react-router: 7.12.0
     redux: 4.2.1
     redux-logger: 3.0.6
     redux-persist: 6.0.0
@@ -17773,7 +17773,7 @@ __metadata:
     multihashes: 4.0.2
     nock: 13.3.3
     nuqs: 2.4.3
-    playwright: 1.49.1
+    playwright: 1.55.1
     png-ts: 0.0.3
     polished: 3.3.2
     polyfill-object.fromentries: 1.0.1
@@ -17793,7 +17793,7 @@ __metadata:
     react-native-reanimated: 3.16.7
     react-popper: 2.3.0
     react-redux: 8.0.5
-    react-router: 7.6.3
+    react-router: 7.12.0
     react-scripts: 5.0.1
     react-scroll-sync: 0.11.2
     react-virtualized-auto-sizer: 1.0.20
@@ -38869,6 +38869,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.55.1":
+  version: 1.55.1
+  resolution: "playwright-core@npm:1.55.1"
+  bin:
+    playwright-core: cli.js
+  checksum: a2b981223fd8f5c50a4e0b6cc36a3ce40b41919d418b564561f085bcd6c8ce9df2354e687fbc76e662fddb9f2b28d0bc1f0124c085958406fcab6c6cf3b8228f
+  languageName: node
+  linkType: hard
+
 "playwright-slack-report@npm:1.1.99":
   version: 1.1.99
   resolution: "playwright-slack-report@npm:1.1.99"
@@ -38897,6 +38906,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: c136d42d625e32614f90e5228a165dc8be48c5bfb52aca9210c6ff04161a409dbe42fe5ae4f05a2653f6a1b836876a04d3b0f24bcbbc053d1509c1d605b7c8d5
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.55.1":
+  version: 1.55.1
+  resolution: "playwright@npm:1.55.1"
+  dependencies:
+    fsevents: 2.3.2
+    playwright-core: 1.55.1
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 4935122ed687cd14861d64e6fdc79613d36d45f1363e911213a338da9993525d3872d7379300471f70209e1ad68ec91c0d65f0136e6c09c0775477943aaf7fb3
   languageName: node
   linkType: hard
 
@@ -41840,9 +41864,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.6.3":
-  version: 7.6.3
-  resolution: "react-router@npm:7.6.3"
+"react-router@npm:7.12.0":
+  version: 7.12.0
+  resolution: "react-router@npm:7.12.0"
   dependencies:
     cookie: ^1.0.1
     set-cookie-parser: ^2.6.0
@@ -41852,7 +41876,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 76930e79cb261bc48ea67851fdd625e165366a6c50b6b0799e147f8964b6a81a9fba447dd5002357a4356741240669afa9bbaee33625a356e89c39421c147b3f
+  checksum: f59b399a968cdd9254b711be74e35e1ae365e00a7c908e22a5d80a45ef3ff6ecaf5add40b31ecedfdbe1f82455bb451e0d3b053d64fa2dfb9364af0942c88ea6
   languageName: node
   linkType: hard
 
@@ -47633,7 +47657,7 @@ __metadata:
     react-native-svg: 15.11.2
     react-native-webview: 13.13.5
     react-redux: 8.0.5
-    react-router: 7.6.3
+    react-router: 7.12.0
     react-test-renderer: 18.3.1
     react-virtualized-auto-sizer: 1.0.20
     react-window: 1.8.9
