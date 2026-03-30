@@ -118,7 +118,7 @@
     "dotenv": "16.0.3",
     "dotenv-cli": "7.1.0",
     "esbuild-register": "3.6.0",
-    "eslint": "8.44.0",
+    "eslint": "9.26.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-storybook": "0.8.0",
     "http-server": "14.1.1",
